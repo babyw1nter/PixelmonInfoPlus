@@ -1,6 +1,5 @@
 package io.github.hhui64.PixelmonInfoPlus.proxy;
 
-import io.github.hhui64.PixelmonInfoPlus.command.IVEVGui;
 import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKey;
 import io.github.hhui64.PixelmonInfoPlus.gui.ivev.IVEVGuiHandler;
 import io.github.hhui64.PixelmonInfoPlus.listeners.HotKeyListener;
