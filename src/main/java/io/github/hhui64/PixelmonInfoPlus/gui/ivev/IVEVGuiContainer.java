@@ -8,15 +8,14 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.Entity1Base;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
-import com.pixelmonmod.pixelmon.enums.EnumType;
 import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
 import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKey;
+import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
 import io.github.hhui64.PixelmonInfoPlus.pixelmon.SlotApi;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.client.renderer.GlStateManager;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +23,9 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class IVEVGuiContainer extends GuiContainer {
     private static final Logger logger = LogManager.getLogger("IVEVGuiContainer");
@@ -34,6 +36,16 @@ public class IVEVGuiContainer extends GuiContainer {
     private static final ResourceLocation background = new ResourceLocation(PixelmonInfoPlus.MODID, "textures/gui/ivevgui.png");
     public Pokemon pokemon = null;
 
+    public static List<IVStore> slots = new LinkedList<IVStore>() {
+        {
+            add(new IVStore());
+            add(new IVStore());
+            add(new IVStore());
+            add(new IVStore());
+            add(new IVStore());
+            add(new IVStore());
+        }
+    };
 
     public IVEVGuiContainer(Container inventorySlotsIn) {
         super(inventorySlotsIn);
@@ -100,21 +112,29 @@ public class IVEVGuiContainer extends GuiContainer {
      * 打开 GUI
      */
     public static void open() {
-        EntityPlayer player = PixelmonInfoPlus.minecraft.player;
-
+        EntityPlayer player = Minecraft.getMinecraft().player;
         player.openGui(PixelmonInfoPlus.instance, IVEVGuiHandler.GUI_ID, player.getEntityWorld(), 0, 0, 0);
         IVEVGuiContainer.isOpen = true;
+        // 每次打开时，从服务器拉取 party 的 IVs
+        IVEVGuiContainer.getPartyIVSFromServer();
     }
 
     /**
      * 关闭 GUI
      */
     public static void close() {
-        EntityPlayer player = PixelmonInfoPlus.minecraft.player;
+        EntityPlayer player = Minecraft.getMinecraft().player;
         if (IVEVGuiContainer.isOpen) {
             player.closeScreen();
             IVEVGuiContainer.isOpen = false;
         }
+    }
+
+    /**
+     * 从服务器获取宝可梦栏的所有宝可梦的 IVs
+     */
+    public static void getPartyIVSFromServer() {
+        PixelmonInfoPlusPacketHandler.sendGetIVSMessageRequestToServer();
     }
 
 
@@ -124,12 +144,16 @@ public class IVEVGuiContainer extends GuiContainer {
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
+
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(0x0302, 0x0303);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
         this.mc.getTextureManager().bindTexture(background);
         this.drawTexturedModalRect(offsetX, offsetY, 0, 0, this.xSize, this.ySize);
+
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
 
@@ -139,14 +163,14 @@ public class IVEVGuiContainer extends GuiContainer {
         drawPokemonStatsText();
         // 绘制左侧的宝可梦像素图片以及基本信息
         drawPokemonPokedexNumberAndLevel();
-        drawPokemon();
+        drawPokemonIcon();
         drawPokemonName();
     }
 
     /**
      * 绘制宝可梦像素图标 & 属性图标
      */
-    public void drawPokemon() {
+    public void drawPokemonIcon() {
         int offsetX = (this.width - this.xSize) / 2 + 16, offsetY = (this.height - this.ySize) / 2;
 
         if (this.pokemon != null) {
@@ -243,8 +267,29 @@ public class IVEVGuiContainer extends GuiContainer {
         int y = (this.ySize / 6);
 
         if (this.pokemon != null) {
-            IVStore ivs = this.pokemon.getIVs();
+            IVStore ivs = slots.size() != 6 ? this.pokemon.getIVs() : slots.get(SlotApi.getSelectedPokemonSlotId());
             EVStore evs = this.pokemon.getEVs();
+
+            String IVsHp = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.HP));
+            String IVsAtk = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.Attack));
+            String IVsDef = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.Defence));
+            String IVsSpAtk = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.SpecialAttack));
+            String IVsSpDef = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.SpecialDefence));
+            String IVsSpd = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.Speed));
+
+            String EVsHp = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.HP));
+            String EVsAtk = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.Attack));
+            String EVsDef = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.Defence));
+            String EVsSpAtk = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.SpecialAttack));
+            String EVsSpDef = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.SpecialDefence));
+            String EVsSpd = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.Speed));
+
+            String Hp = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.HP));
+            String Atk = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.Attack));
+            String Def = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.Defence));
+            String SpAtk = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.SpecialAttack));
+            String SpDef = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.SpecialDefence));
+            String Spd = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.Speed));
 
             // 绘制标题
             drawString(this.mc.fontRenderer, "HP", offsetX, offsetY + 12, 0xFFFFFF);
@@ -255,28 +300,28 @@ public class IVEVGuiContainer extends GuiContainer {
             drawString(this.mc.fontRenderer, "速度", offsetX, offsetY + 113, 0xFFFFFF);
 
             // 绘制数值 IVS
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(ivs.getStat(StatsType.HP)), offsetX + 55, offsetY + 12, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(ivs.getStat(StatsType.Attack)), offsetX + 55, offsetY + 33, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(ivs.getStat(StatsType.Defence)), offsetX + 55, offsetY + 53, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(ivs.getStat(StatsType.SpecialAttack)), offsetX + 55, offsetY + 72, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(ivs.getStat(StatsType.SpecialDefence)), offsetX + 55, offsetY + 93, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(ivs.getStat(StatsType.Speed)), offsetX + 55, offsetY + 113, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsHp, offsetX + 55, offsetY + 12, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsAtk, offsetX + 55, offsetY + 33, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsDef, offsetX + 55, offsetY + 53, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpAtk, offsetX + 55, offsetY + 72, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpDef, offsetX + 55, offsetY + 93, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpd, offsetX + 55, offsetY + 113, 0xFFFFFF);
 
             // 绘制数值 EVS
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(evs.getStat(StatsType.HP)), offsetX + 92, offsetY + 12, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(evs.getStat(StatsType.Attack)), offsetX + 92, offsetY + 33, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(evs.getStat(StatsType.Defence)), offsetX + 92, offsetY + 53, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(evs.getStat(StatsType.SpecialAttack)), offsetX + 92, offsetY + 72, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(evs.getStat(StatsType.SpecialDefence)), offsetX + 92, offsetY + 93, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(evs.getStat(StatsType.Speed)), offsetX + 92, offsetY + 113, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsHp, offsetX + 92, offsetY + 12, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsAtk, offsetX + 92, offsetY + 33, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsDef, offsetX + 92, offsetY + 53, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsSpAtk, offsetX + 92, offsetY + 72, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsSpDef, offsetX + 92, offsetY + 93, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsSpd, offsetX + 92, offsetY + 113, 0xFFFFFF);
 
-            // 绘制数值 SS
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(this.pokemon.getStat(StatsType.HP)), offsetX + 129, offsetY + 12, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(this.pokemon.getStat(StatsType.Attack)), offsetX + 129, offsetY + 33, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(this.pokemon.getStat(StatsType.Defence)), offsetX + 129, offsetY + 53, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(this.pokemon.getStat(StatsType.SpecialAttack)), offsetX + 129, offsetY + 72, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(this.pokemon.getStat(StatsType.SpecialDefence)), offsetX + 129, offsetY + 93, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, String.valueOf(this.pokemon.getStat(StatsType.Speed)), offsetX + 129, offsetY + 113, 0xFFFFFF);
+            // 绘制数值 ST
+            drawCenteredString(this.mc.fontRenderer, Hp, offsetX + 129, offsetY + 12, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, Atk, offsetX + 129, offsetY + 33, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, Def, offsetX + 129, offsetY + 53, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, SpAtk, offsetX + 129, offsetY + 72, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, SpDef, offsetX + 129, offsetY + 93, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, Spd, offsetX + 129, offsetY + 113, 0xFFFFFF);
 
         }
     }
