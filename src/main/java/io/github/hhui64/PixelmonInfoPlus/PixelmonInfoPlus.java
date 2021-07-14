@@ -1,5 +1,6 @@
 package io.github.hhui64.PixelmonInfoPlus;
 
+import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
 import io.github.hhui64.PixelmonInfoPlus.proxy.CommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -15,6 +16,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -25,8 +28,8 @@ public class PixelmonInfoPlus {
     public static final String VERSION = "1.0.0";
     public static final String DEPENDENCIES = "required-after:pixelmon";
 
-    public static final MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-    public static final Minecraft minecraft = Minecraft.getMinecraft();
+    public static Logger logger = LogManager.getLogger("PixelmonInfoPlus");
+    public static MinecraftServer server = null;
 
     @SidedProxy(clientSide = "io.github.hhui64.PixelmonInfoPlus.proxy.ClientProxy", serverSide = "io.github.hhui64.PixelmonInfoPlus.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -36,6 +39,7 @@ public class PixelmonInfoPlus {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        new PixelmonInfoPlusPacketHandler();
         proxy.preInit(event);
     }
 
@@ -46,6 +50,7 @@ public class PixelmonInfoPlus {
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        PixelmonInfoPlus.server = FMLCommonHandler.instance().getMinecraftServerInstance();
         proxy.serverStarting(event);
     }
 
