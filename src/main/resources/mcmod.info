@@ -1,0 +1,21 @@
+[
+  {
+    "modid": "pixelmoninfoplus",
+    "name": "Pixelmon Info Plus",
+    "description": "Show more info about Pixelmon.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://hhui64.github.io/",
+    "updateUrl": "",
+    "authorList": [
+      "CSCStudio::hhui64",
+      "Mou_mou"
+    ],
+    "credits": "You don't have any magic because you isn't TenHighYoung...",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": [
+      "pixelmon"
+    ]
+  }
+]
