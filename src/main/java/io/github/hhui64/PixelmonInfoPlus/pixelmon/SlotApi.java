@@ -50,30 +50,5 @@ public class SlotApi {
      * @return pokemon
      */
     public static Pokemon getSelectedPokemon() {
-        Pokemon pokemon = null;
-//        if (PixelmonInfoPlus.minecraft.world.isRemote) {
-//            UUID player = PixelmonInfoPlus.minecraft.player.getUniqueID();
-//            PlayerPartyStorage playerPartyStorage = Pixelmon.storageManager.getParty(player);
-//            if (playerPartyStorage != null) {
-//                pokemon = playerPartyStorage.get(GuiPixelmonOverlay.selectedPixelmon);
-//            }
-//        } else {
-//            pokemon = ClientStorageManager.party.get(GuiPixelmonOverlay.selectedPixelmon);
-//        }
-
-        //pokemon = ClientStorageManager.party.get(GuiPixelmonOverlay.selectedPixelmon);
-        //FMLCommonHandler.instance().getMinecraftServerInstance().get
-        // UUID p = ClientStorageManager.party.getPlayerUUID();
-        //PlayerPartyStorage playerPartyStorage = Pixelmon.storageManager.getParty(p);
-        //ClientStorageManager.get
-//        if (playerPartyStorage != null) {
-//            pokemon = playerPartyStorage.get(GuiPixelmonOverlay.selectedPixelmon);
-//        }
-//        System.out.println(p.toString());
-//
-//        PlayerPartyStorage pps = new PlayerPartyStorage(p, true);
-//        pokemon = pps.get(GuiPixelmonOverlay.selectedPixelmon);
-        pokemon = ClientStorageManager.party.get(GuiPixelmonOverlay.selectedPixelmon);
-        return pokemon;
     }
 }

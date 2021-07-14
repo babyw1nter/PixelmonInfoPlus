@@ -34,8 +34,6 @@ public class PixelmonInfoPlus {
     @Mod.Instance(PixelmonInfoPlus.MODID)
     public static PixelmonInfoPlus instance;
 
-    private static Logger logger = LogManager.getLogger("IVEVGUI");
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
@@ -55,10 +53,4 @@ public class PixelmonInfoPlus {
     public void serverStarted(FMLServerStartedEvent event) {
         proxy.serverStarted(event);
     }
-
-//    @SubscribeEvent
-//    public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-//        EntityPlayerSP player = Minecraft.getMinecraft().player;
-//        System.out.println(player);
-//    }
 }

@@ -16,22 +16,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class CommonProxy {
-    private static Logger logger = LogManager.getLogger("PBGUI");
+    private static Logger logger = LogManager.getLogger("CommonProxy");
 
     public void preInit(FMLPreInitializationEvent event) {
         // Pixelmon.EVENT_BUS.register(new SpawnListener());
     }
 
     public void init(FMLInitializationEvent event) {
-        new HotKey();
-        new IVEVGuiHandler();
-        ClientRegistry.registerKeyBinding(HotKey.SHOW_IVEVGUI_KEY_BINDING);
-        MinecraftForge.EVENT_BUS.register(new HotKeyListener());
         // MinecraftForge.EVENT_BUS.register(new RenderListener());
     }
 
     public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new IVEVGui());
+//        event.registerServerCommand(new IVEVGui());
+//        event.registerServerCommand(new Ivsa());
         // ClientCommandHandler.instance.registerCommand(new IVEVGui());
     }
 

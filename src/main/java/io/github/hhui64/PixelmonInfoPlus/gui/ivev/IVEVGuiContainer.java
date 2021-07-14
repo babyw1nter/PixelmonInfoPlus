@@ -34,13 +34,6 @@ public class IVEVGuiContainer extends GuiContainer {
     private static final ResourceLocation background = new ResourceLocation(PixelmonInfoPlus.MODID, "textures/gui/ivevgui.png");
     public Pokemon pokemon = null;
 
-//    private static int n = 1;
-//    private static int offsetY1 = 12;
-//    private static int offsetY2 = 32;
-//    private static int offsetY3 = 52;
-//    private static int offsetY4 = 72;
-//    private static int offsetY5 = 92;
-//    private static int offsetY6 = 112;
 
     public IVEVGuiContainer(Container inventorySlotsIn) {
         super(inventorySlotsIn);
@@ -77,88 +70,6 @@ public class IVEVGuiContainer extends GuiContainer {
             }
             this.pokemon = SlotApi.getSelectedPokemon();
         }
-
-        /*
-          调试代码
-         */
-//        switch (keyCode) {
-//            case Keyboard.KEY_1:
-//                IVEVGuiContainer.n = 1;
-//                break;
-//            case Keyboard.KEY_2:
-//                IVEVGuiContainer.n = 2;
-//                break;
-//            case Keyboard.KEY_3:
-//                IVEVGuiContainer.n = 3;
-//                break;
-//            case Keyboard.KEY_4:
-//                IVEVGuiContainer.n = 4;
-//                break;
-//            case Keyboard.KEY_5:
-//                IVEVGuiContainer.n = 5;
-//                break;
-//            case Keyboard.KEY_6:
-//                IVEVGuiContainer.n = 6;
-//                break;
-//        }
-//        switch (keyCode) {
-//            case 200:
-//                switch (IVEVGuiContainer.n) {
-//                    case 1:
-//                        IVEVGuiContainer.offsetY1--;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY1));
-//                        break;
-//                    case 2:
-//                        IVEVGuiContainer.offsetY2--;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY2));
-//                        break;
-//                    case 3:
-//                        IVEVGuiContainer.offsetY3--;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY3));
-//                        break;
-//                    case 4:
-//                        IVEVGuiContainer.offsetY4--;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY4));
-//                        break;
-//                    case 5:
-//                        IVEVGuiContainer.offsetY5--;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY5));
-//                        break;
-//                    case 6:
-//                        IVEVGuiContainer.offsetY6--;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY6));
-//                        break;
-//                }
-//                break;
-//            case 208:
-//                switch (IVEVGuiContainer.n) {
-//                    case 1:
-//                        IVEVGuiContainer.offsetY1++;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY1));
-//                        break;
-//                    case 2:
-//                        IVEVGuiContainer.offsetY2++;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY2));
-//                        break;
-//                    case 3:
-//                        IVEVGuiContainer.offsetY3++;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY3));
-//                        break;
-//                    case 4:
-//                        IVEVGuiContainer.offsetY4++;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY4));
-//                        break;
-//                    case 5:
-//                        IVEVGuiContainer.offsetY5++;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY5));
-//                        break;
-//                    case 6:
-//                        IVEVGuiContainer.offsetY6++;
-//                        logger.info(String.valueOf(IVEVGuiContainer.offsetY6));
-//                        break;
-//                }
-//                break;
-//        }
     }
 
     /**
@@ -213,20 +124,13 @@ public class IVEVGuiContainer extends GuiContainer {
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        // 设置渲染混合模式及颜色模式（请查看 lwjgl 及 OpenGL 相关文档）
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(0x0302, 0x0303);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        // 将自定义背景贴图与 Minecraft 材质管理器绑定
         this.mc.getTextureManager().bindTexture(background);
-        // 计算相对位置（以背景贴图左上角为 (0,0) 点）
-        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
-        // 绘制背景贴图（参数说明：在游戏中的 XY 位置；贴图在贴图文件中的 XY 位置；贴图的大小）
         this.drawTexturedModalRect(offsetX, offsetY, 0, 0, this.xSize, this.ySize);
-        // 用完了关掉（一定要关，不然可能会出问题）
         GlStateManager.disableBlend();
-        // 结束渲染
         GlStateManager.popMatrix();
 
         this.pokemon = SlotApi.getSelectedPokemon();
