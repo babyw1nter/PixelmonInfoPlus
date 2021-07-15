@@ -50,25 +50,7 @@ public class GetIVSMessageRequest implements IMessage {
 
                 // 添加为一个计划任务(Scheduled Task)，在主服务器线程上执行操作
                 serverPlayer.getServerWorld().addScheduledTask(() -> {
-                    // 获取玩家的宝可梦 party
-                    PlayerPartyStorage playerPartyStorage = Pixelmon.storageManager.getParty(serverPlayer);
-
-                    if (playerPartyStorage != null) {
-                        List<int[]> slots = new ArrayList<>();
-
-                        for (int i = 0; i < 6; i++) {
-                            Pokemon pokemon = playerPartyStorage.get(i);
-
-                            if (pokemon != null && !pokemon.isEgg()) {
-                                slots.add(pokemon.getIVs().getArray());
-                            } else {
-                                slots.add(new int[]{0, 0, 0, 0, 0, 0});
-                            }
-                        }
-
-                        // 发送（返回）响应数据包给客户端
-                        PixelmonInfoPlusPacketHandler.sendGetIVSMessageResponseToClient(slots, serverPlayer);
-                    }
+                    PixelmonInfoPlusPacketHandler.sendGetIVSMessageResponseToClient(serverPlayer);
                 });
             }
 

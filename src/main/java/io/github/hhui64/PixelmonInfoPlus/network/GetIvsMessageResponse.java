@@ -44,9 +44,21 @@ public class GetIvsMessageResponse implements IMessage {
                 List<IVStore> slots = new ArrayList<>();
 
                 for (int i = 0; i < 6; i++) {
-                    String slotKey = "slot:" + i;
-                    int[] ivs = message.compound.getIntArray(slotKey);
-                    slots.add(new IVStore(ivs));
+                    String slotIVsKey = "slot:" + i;
+                    String slotIsHtKey = "slot:" + i + "ht";
+
+                    int[] ivsArray = message.compound.getIntArray(slotIVsKey);
+                    int[] isHtArray = message.compound.getIntArray(slotIsHtKey);
+
+                    IVStore ivs = new IVStore(ivsArray);
+                    ivs.setHyperTrained(StatsType.HP, isHtArray[0] != 0);
+                    ivs.setHyperTrained(StatsType.Attack, isHtArray[1] != 0);
+                    ivs.setHyperTrained(StatsType.Defence, isHtArray[2] != 0);
+                    ivs.setHyperTrained(StatsType.SpecialAttack, isHtArray[3] != 0);
+                    ivs.setHyperTrained(StatsType.SpecialDefence, isHtArray[4] != 0);
+                    ivs.setHyperTrained(StatsType.Speed, isHtArray[5] != 0);
+
+                    slots.add(ivs);
                     // PixelmonInfoPlus.logger.info("宝可梦槽 {} 的 IVs {}", i, Arrays.toString(slots.get(i)));
                 }
 
