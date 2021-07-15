@@ -223,11 +223,11 @@ public class IVEVGuiContainer extends GuiContainer {
 
         if (this.pokemon != null) {
             if (this.pokemon.isEgg()) {
-                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " ???", offsetX - 47 + 8, y, 0xFFFFFF);
-                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " ???", offsetX + 19, y, 0xFFFFFF);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " ???", offsetX - 47 + 8, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " ???", offsetX + 19, y, 0xFFFFFF);
             } else {
-                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " " + this.pokemon.getSpecies().getNationalPokedexNumber(), offsetX - 47 + 8, y, 0xFFFFFF);
-                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " " + this.pokemon.getLevel(), offsetX + 19, y, 0xFFFFFF);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " " + this.pokemon.getSpecies().getNationalPokedexNumber(), offsetX - 47 + 8, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " " + this.pokemon.getLevel(), offsetX + 19, y, 0xFFFFFF);
             }
         }
     }
