@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -163,6 +164,10 @@ public class IVEVGuiContainer extends GuiContainer {
 
         this.mc.getTextureManager().bindTexture(background);
         this.drawTexturedModalRect(offsetX, offsetY, 0, 0, this.xSize, this.ySize);
+        // 绘制进度条
+        this.drawProgress();
+        // 绘制进度条边框
+        this.drawTexturedModalRect(offsetX + 105, offsetY + 152, 105, 208, 137, 31);
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
@@ -170,11 +175,47 @@ public class IVEVGuiContainer extends GuiContainer {
         this.pokemon = SlotApi.getSelectedPokemon();
 
         // 绘制完背景后，再绘制文字，以保证文字在最上层显示
+        drawProgressText();
         drawPokemonStatsText();
         // 绘制左侧的宝可梦像素图片以及基本信息
         drawPokemonPokedexNumberAndLevel();
         drawPokemonIcon();
         drawPokemonName();
+    }
+
+    /**
+     * 绘制进度条
+     */
+    public void drawProgress() {
+        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
+
+        IVStore ivs = this.getCurrentPokemonIVStore();
+        EVStore evs = this.pokemon.getEVs();
+
+        int ivsProgressWidth = Math.toIntExact(Math.round(115 * ivs.getPercentage(0) / 100));
+        double evsPercentage = Arrays.stream(evs.getArray()).sum() / 510.0 * 100.0;
+        int evsProgressWidth = Math.toIntExact(Math.round(115 * evsPercentage / 100));
+
+        this.drawTexturedModalRect(offsetX + 126, offsetY + 153, 126, 243, ivsProgressWidth, 12);
+        this.drawTexturedModalRect(offsetX + 126, offsetY + 170, 126, 243, evsProgressWidth, 12);
+    }
+
+    /**
+     * 绘制进度条上的文本
+     */
+    public void drawProgressText() {
+        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
+
+        if (this.pokemon != null) {
+            IVStore ivs = this.getCurrentPokemonIVStore();
+            EVStore evs = this.getCurrentPokemonEVStore();
+            double evsPercentage = Arrays.stream(evs.getArray()).sum() / 510.0 * 100.0;
+
+            String strIVs = this.pokemon.isEgg() ? "???/??? (???%)" : Arrays.stream(ivs.getArray()).sum() + "/186 (" + Math.round(ivs.getPercentage(0)) + "%)";
+            String strEVs = this.pokemon.isEgg() ? "???/??? (???%)" : Arrays.stream(evs.getArray()).sum() + "/510 (" + Math.round(evsPercentage) + "%)";
+            this.drawCenteredString(this.mc.fontRenderer, strIVs, offsetX + 183, offsetY + 155, 0xFFFFFF);
+            this.drawCenteredString(this.mc.fontRenderer, strEVs, offsetX + 183, offsetY + 172, 0xFFFFFF);
+        }
     }
 
     /**
