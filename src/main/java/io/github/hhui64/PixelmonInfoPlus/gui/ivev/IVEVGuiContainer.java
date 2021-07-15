@@ -140,6 +140,13 @@ public class IVEVGuiContainer extends GuiContainer {
         PixelmonInfoPlusPacketHandler.sendGetIVSMessageRequestToServer();
     }
 
+    public IVStore getCurrentPokemonIVStore() {
+        return slots.size() != 6 ? this.pokemon.getIVs() : slots.get(SlotApi.getSelectedPokemonSlotId());
+    }
+
+    public EVStore getCurrentPokemonEVStore() {
+        return this.pokemon.getEVs();
+    }
 
     /**
      * 绘制背景层
@@ -270,8 +277,8 @@ public class IVEVGuiContainer extends GuiContainer {
         int x = offsetX + 104;
 
         if (this.pokemon != null) {
-            IVStore ivs = slots.size() != 6 ? this.pokemon.getIVs() : slots.get(SlotApi.getSelectedPokemonSlotId());
-            EVStore evs = this.pokemon.getEVs();
+            IVStore ivs = this.getCurrentPokemonIVStore();
+            EVStore evs = this.getCurrentPokemonEVStore();
 
             String IVsHp = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.HP) ? "31(" + ivs.getStat(StatsType.HP) + ")" : String.valueOf(ivs.getStat(StatsType.HP));
             String IVsAtk = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.Attack) ? "31(" + ivs.getStat(StatsType.Attack) + ")" : String.valueOf(ivs.getStat(StatsType.Attack));
