@@ -1,11 +1,7 @@
 package io.github.hhui64.PixelmonInfoPlus.proxy;
 
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
-import io.github.hhui64.PixelmonInfoPlus.command.IVEVGui;
 import io.github.hhui64.PixelmonInfoPlus.gui.ivev.IVEVGuiHandler;
-import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKey;
-import io.github.hhui64.PixelmonInfoPlus.listeners.HotKeyListener;
-import net.minecraft.client.Minecraft;
+import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKeyManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -21,10 +17,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        new HotKey();
         new IVEVGuiHandler();
-        ClientRegistry.registerKeyBinding(HotKey.SHOW_IVEVGUI_KEY_BINDING);
-        MinecraftForge.EVENT_BUS.register(new HotKeyListener());
+        HotKeyManager.bind();
         super.init(event);
     }
 
