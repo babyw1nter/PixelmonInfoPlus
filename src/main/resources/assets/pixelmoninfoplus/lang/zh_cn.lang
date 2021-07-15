@@ -1,0 +1,16 @@
+# Key binding
+key.showorhiddenstatspanel.category=Pixelmon Info Plus - 更多宝可梦信息
+key.showorhiddenstatspanel.description=显示/隐藏 属性面板
+
+# Gui
+gui.statspanel.lvl=Lvl:
+gui.statspanel.number=No.
+gui.statspanel.hp.name=HP
+gui.statspanel.attack.name=攻击
+gui.statspanel.defense.name=防御
+gui.statspanel.spattack.name=特攻
+gui.statspanel.spdefense.name=特防
+gui.statspanel.speed.name=速度
+
+# more
+mod.pixelmoninfoplus.name=Pixelmon Info Plus

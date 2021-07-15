@@ -1,0 +1,16 @@
+# Key binding
+key.showorhiddenstatspanel.category=Pixelmon Info Plus
+key.showorhiddenstatspanel.description=Show/Hidden Stats Panel
+
+# Gui
+gui.statspanel.lvl=Lvl:
+gui.statspanel.number=No.
+gui.statspanel.hp.name=HP
+gui.statspanel.attack.name=Atk
+gui.statspanel.defense.name=Def
+gui.statspanel.spattack.name=SpAtk
+gui.statspanel.spdefense.name=SpDef
+gui.statspanel.speed.name=Spd
+
+# more
+mod.pixelmoninfoplus.name=Pixelmon Info Plus
