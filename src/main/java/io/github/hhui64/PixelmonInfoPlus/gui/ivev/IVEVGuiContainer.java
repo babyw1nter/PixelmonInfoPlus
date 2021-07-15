@@ -270,12 +270,12 @@ public class IVEVGuiContainer extends GuiContainer {
             IVStore ivs = slots.size() != 6 ? this.pokemon.getIVs() : slots.get(SlotApi.getSelectedPokemonSlotId());
             EVStore evs = this.pokemon.getEVs();
 
-            String IVsHp = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.HP));
-            String IVsAtk = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.Attack));
-            String IVsDef = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.Defence));
-            String IVsSpAtk = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.SpecialAttack));
-            String IVsSpDef = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.SpecialDefence));
-            String IVsSpd = this.pokemon.isEgg() ? "???" : String.valueOf(ivs.getStat(StatsType.Speed));
+            String IVsHp = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.HP) ? "31(" + ivs.getStat(StatsType.HP) + ")" : String.valueOf(ivs.getStat(StatsType.HP));
+            String IVsAtk = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.Attack) ? "31(" + ivs.getStat(StatsType.Attack) + ")" : String.valueOf(ivs.getStat(StatsType.Attack));
+            String IVsDef = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.Defence) ? "31(" + ivs.getStat(StatsType.Defence) + ")" : String.valueOf(ivs.getStat(StatsType.Defence));
+            String IVsSpAtk = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.SpecialAttack) ? "31(" + ivs.getStat(StatsType.SpecialAttack) + ")" : String.valueOf(ivs.getStat(StatsType.SpecialAttack));
+            String IVsSpDef = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.SpecialDefence) ? "31(" + ivs.getStat(StatsType.SpecialDefence) + ")" : String.valueOf(ivs.getStat(StatsType.SpecialDefence));
+            String IVsSpd = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.Speed) ? "31(" + ivs.getStat(StatsType.Speed) + ")" : String.valueOf(ivs.getStat(StatsType.Speed));
 
             String EVsHp = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.HP));
             String EVsAtk = this.pokemon.isEgg() ? "--" : String.valueOf(evs.getStat(StatsType.Attack));
@@ -291,6 +291,13 @@ public class IVEVGuiContainer extends GuiContainer {
             String SpDef = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.SpecialDefence));
             String Spd = this.pokemon.isEgg() ? "???" : String.valueOf(this.pokemon.getStat(StatsType.Speed));
 
+            int HpColor = this.pokemon.getNature().increasedStat == StatsType.HP ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.HP ? 16724016 : 0xFFFFFF);
+            int AtkColor = this.pokemon.getNature().increasedStat == StatsType.Attack ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.Attack ? 16724016 : 0xFFFFFF);
+            int DefColor = this.pokemon.getNature().increasedStat == StatsType.Defence ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.Defence ? 16724016 : 0xFFFFFF);
+            int SpAtkColor = this.pokemon.getNature().increasedStat == StatsType.SpecialAttack ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.SpecialAttack ? 16724016 : 0xFFFFFF);
+            int SpDefColor = this.pokemon.getNature().increasedStat == StatsType.SpecialDefence ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.SpecialDefence ? 16724016 : 0xFFFFFF);
+            int SpdColor = this.pokemon.getNature().increasedStat == StatsType.Speed ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.Speed ? 16724016 : 0xFFFFFF);
+
             // 绘制标题
             drawString(this.mc.fontRenderer, "HP", offsetX, offsetY + 12, 0xFFFFFF);
             drawString(this.mc.fontRenderer, "攻击", offsetX, offsetY + 33, 0xFFFFFF);
@@ -300,12 +307,12 @@ public class IVEVGuiContainer extends GuiContainer {
             drawString(this.mc.fontRenderer, "速度", offsetX, offsetY + 113, 0xFFFFFF);
 
             // 绘制数值 IVS
-            drawCenteredString(this.mc.fontRenderer, IVsHp, offsetX + 55, offsetY + 12, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsAtk, offsetX + 55, offsetY + 33, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsDef, offsetX + 55, offsetY + 53, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsSpAtk, offsetX + 55, offsetY + 72, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsSpDef, offsetX + 55, offsetY + 93, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsSpd, offsetX + 55, offsetY + 113, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsHp, offsetX + 55, offsetY + 12, ivs.isHyperTrained(StatsType.HP) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsAtk, offsetX + 55, offsetY + 33, ivs.isHyperTrained(StatsType.Attack) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsDef, offsetX + 55, offsetY + 53, ivs.isHyperTrained(StatsType.Defence) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpAtk, offsetX + 55, offsetY + 72, ivs.isHyperTrained(StatsType.SpecialAttack) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpDef, offsetX + 55, offsetY + 93, ivs.isHyperTrained(StatsType.SpecialDefence) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpd, offsetX + 55, offsetY + 113, ivs.isHyperTrained(StatsType.Speed) ? 0xFF55FF : 0xFFFFFF);
 
             // 绘制数值 EVS
             drawCenteredString(this.mc.fontRenderer, EVsHp, offsetX + 92, offsetY + 12, 0xFFFFFF);
@@ -316,12 +323,12 @@ public class IVEVGuiContainer extends GuiContainer {
             drawCenteredString(this.mc.fontRenderer, EVsSpd, offsetX + 92, offsetY + 113, 0xFFFFFF);
 
             // 绘制数值 ST
-            drawCenteredString(this.mc.fontRenderer, Hp, offsetX + 129, offsetY + 12, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, Atk, offsetX + 129, offsetY + 33, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, Def, offsetX + 129, offsetY + 53, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, SpAtk, offsetX + 129, offsetY + 72, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, SpDef, offsetX + 129, offsetY + 93, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, Spd, offsetX + 129, offsetY + 113, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, Hp, offsetX + 129, offsetY + 12, HpColor);
+            drawCenteredString(this.mc.fontRenderer, Atk, offsetX + 129, offsetY + 33, AtkColor);
+            drawCenteredString(this.mc.fontRenderer, Def, offsetX + 129, offsetY + 53, DefColor);
+            drawCenteredString(this.mc.fontRenderer, SpAtk, offsetX + 129, offsetY + 72, SpAtkColor);
+            drawCenteredString(this.mc.fontRenderer, SpDef, offsetX + 129, offsetY + 93, SpDefColor);
+            drawCenteredString(this.mc.fontRenderer, Spd, offsetX + 129, offsetY + 113, SpdColor);
 
         }
     }
