@@ -3,13 +3,12 @@ package io.github.hhui64.PixelmonInfoPlus.gui.ivev;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.client.gui.GuiHelper;
 import com.pixelmonmod.pixelmon.client.gui.GuiPixelmonOverlay;
-import com.pixelmonmod.pixelmon.client.gui.GuiResources;
 import com.pixelmonmod.pixelmon.entities.pixelmon.Entity1Base;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
-import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKey;
+import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKeyManager;
 import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
 import io.github.hhui64.PixelmonInfoPlus.pixelmon.SlotApi;
 import net.minecraft.client.Minecraft;
@@ -18,12 +17,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,7 +65,7 @@ public class IVEVGuiContainer extends GuiContainer {
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
         // 按下 ESC 和绑定快捷键时，关闭 GUI。
-        if (HotKey.SHOW_IVEVGUI_KEY_BINDING.getKeyCode() == keyCode || Keyboard.KEY_ESCAPE == keyCode) {
+        if (HotKeyManager.showStatsPanel.getKeyCode() == keyCode || Keyboard.KEY_ESCAPE == keyCode) {
             IVEVGuiContainer.close();
         }
 
@@ -95,6 +94,7 @@ public class IVEVGuiContainer extends GuiContainer {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+        // 鼠标被点击时，关闭 GUI。
         IVEVGuiContainer.close();
     }
 
@@ -219,15 +219,15 @@ public class IVEVGuiContainer extends GuiContainer {
      */
     public void drawPokemonPokedexNumberAndLevel() {
         int offsetX = (this.width - this.xSize) / 2 + 47, offsetY = (this.height - this.ySize) / 2;
-        int o = 11;
+        int y = offsetY + 11;
 
         if (this.pokemon != null) {
             if (this.pokemon.isEgg()) {
-                drawString(this.mc.fontRenderer, "No. ???", offsetX - 47 + 8, offsetY + 11, 16777215);
-                drawCenteredString(this.mc.fontRenderer, "Lvl: ???", offsetX + 19, offsetY + 11, 16777215);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " ???", offsetX - 47 + 8, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " ???", offsetX + 19, y, 0xFFFFFF);
             } else {
-                drawString(this.mc.fontRenderer, "No. " + this.pokemon.getSpecies().getNationalPokedexNumber(), offsetX - 47 + 8, offsetY + 11, 16777215);
-                drawCenteredString(this.mc.fontRenderer, "Lvl: " + this.pokemon.getLevel(), offsetX + 19, offsetY + 11, 16777215);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " " + this.pokemon.getSpecies().getNationalPokedexNumber(), offsetX - 47 + 8, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " " + this.pokemon.getLevel(), offsetX + 19, y, 0xFFFFFF);
             }
         }
     }
@@ -243,16 +243,16 @@ public class IVEVGuiContainer extends GuiContainer {
             String pokemonNickname = this.pokemon.getNickname();
 
             if (this.pokemon.isEgg()) {
-                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), offsetX, offsetY + 99, 16777215);
+                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), offsetX, offsetY + 99, 0xFFFFFF);
 
             } else {
                 // int offset = pokemon.hasGigantamaxFactor() ? 9 : 0;
                 if (pokemonNickname != null && !pokemonNickname.equals("")) {
                     String ogName = "(" + this.pokemon.getSpecies().getLocalizedName() + ")";
-                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, offsetX, offsetY + 95, 16777215);
-                    this.drawCenteredString(this.mc.fontRenderer, ogName, offsetX, offsetY + 104, 16777215);
+                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, offsetX, offsetY + 95, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, ogName, offsetX, offsetY + 104, 0xFFFFFF);
                 } else {
-                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), offsetX, offsetY + 99, 16777215);
+                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), offsetX, offsetY + 99, 0xFFFFFF);
                 }
             }
         }
@@ -299,12 +299,12 @@ public class IVEVGuiContainer extends GuiContainer {
             int SpdColor = this.pokemon.getNature().increasedStat == StatsType.Speed ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.Speed ? 16724016 : 0xFFFFFF);
 
             // 绘制标题
-            drawString(this.mc.fontRenderer, "HP", offsetX, offsetY + 12, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, "攻击", offsetX, offsetY + 33, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, "防御", offsetX, offsetY + 53, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, "特攻", offsetX, offsetY + 72, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, "特防", offsetX, offsetY + 93, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, "速度", offsetX, offsetY + 113, 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.hp.name"), offsetX, offsetY + 12, 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.attack.name"), offsetX, offsetY + 33, 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.defense.name"), offsetX, offsetY + 53, 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.spattack.name"), offsetX, offsetY + 72, 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.spdefense.name"), offsetX, offsetY + 93, 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.speed.name"), offsetX, offsetY + 113, 0xFFFFFF);
 
             // 绘制数值 IVS
             drawCenteredString(this.mc.fontRenderer, IVsHp, offsetX + 55, offsetY + 12, ivs.isHyperTrained(StatsType.HP) ? 0xFF55FF : 0xFFFFFF);
