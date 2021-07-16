@@ -1,7 +1,9 @@
 package io.github.hhui64.PixelmonInfoPlus.proxy;
 
 import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
+import io.github.hhui64.PixelmonInfoPlus.listeners.FMLNetworkEventHandler;
 import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -18,7 +20,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
-
+        MinecraftForge.EVENT_BUS.register(new FMLNetworkEventHandler());
     }
 
     public void serverStarting(FMLServerStartingEvent event) {
