@@ -12,7 +12,11 @@ public class IVEVGuiHandler implements IGuiHandler {
     public static final int GUI_ID = 1;
 
     public IVEVGuiHandler() {
-        NetworkRegistry.INSTANCE.registerGuiHandler(PixelmonInfoPlus.instance, this);
+
+    }
+
+    public static void init() {
+        NetworkRegistry.INSTANCE.registerGuiHandler(PixelmonInfoPlus.instance, new IVEVGuiHandler());
     }
 
     /**

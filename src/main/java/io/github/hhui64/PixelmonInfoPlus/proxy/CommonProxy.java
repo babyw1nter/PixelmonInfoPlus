@@ -1,7 +1,8 @@
 package io.github.hhui64.PixelmonInfoPlus.proxy;
 
-//import io.github.hhui64.PixelmonInfoPlus.listeners.RenderListener;
-//import io.github.hhui64.PixelmonInfoPlus.listeners.SpawnListener;
+import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
+import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
@@ -13,17 +14,15 @@ public class CommonProxy {
     private static Logger logger = LogManager.getLogger("CommonProxy");
 
     public void preInit(FMLPreInitializationEvent event) {
-        // Pixelmon.EVENT_BUS.register(new SpawnListener());
+        PixelmonInfoPlusPacketHandler.init();
     }
 
     public void init(FMLInitializationEvent event) {
-        // MinecraftForge.EVENT_BUS.register(new RenderListener());
+
     }
 
     public void serverStarting(FMLServerStartingEvent event) {
-//        event.registerServerCommand(new IVEVGui());
-//        event.registerServerCommand(new Ivsa());
-        // ClientCommandHandler.instance.registerCommand(new IVEVGui());
+        PixelmonInfoPlus.server = FMLCommonHandler.instance().getMinecraftServerInstance();
     }
 
     public void serverStarted(FMLServerStartedEvent event) {

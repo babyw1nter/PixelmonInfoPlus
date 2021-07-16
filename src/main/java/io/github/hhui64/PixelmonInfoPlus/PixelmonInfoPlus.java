@@ -39,7 +39,6 @@ public class PixelmonInfoPlus {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        new PixelmonInfoPlusPacketHandler();
         proxy.preInit(event);
     }
 
@@ -50,7 +49,6 @@ public class PixelmonInfoPlus {
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-        PixelmonInfoPlus.server = FMLCommonHandler.instance().getMinecraftServerInstance();
         proxy.serverStarting(event);
     }
 

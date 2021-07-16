@@ -17,18 +17,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        new IVEVGuiHandler();
+        IVEVGuiHandler.init();
         HotKeyManager.bind();
         super.init(event);
-    }
-
-    @Override
-    public void serverStarting(FMLServerStartingEvent event) {
-        super.serverStarting(event);
-    }
-
-    @Override
-    public void serverStarted(FMLServerStartedEvent event) {
-        super.serverStarted(event);
     }
 }
