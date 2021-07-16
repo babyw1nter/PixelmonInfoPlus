@@ -9,8 +9,8 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
 import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKeyManager;
-import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
 import io.github.hhui64.PixelmonInfoPlus.pixelmon.SlotApi;
+import io.github.hhui64.PixelmonInfoPlus.util.PartyCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,18 +34,7 @@ public class IVEVGuiContainer extends GuiContainer {
      */
     public static Boolean isOpen = false;
     private static final ResourceLocation background = new ResourceLocation(PixelmonInfoPlus.MODID, "textures/gui/ivevgui.png");
-    public Pokemon pokemon = null;
-
-    public static List<IVStore> slots = new LinkedList<IVStore>() {
-        {
-            add(new IVStore());
-            add(new IVStore());
-            add(new IVStore());
-            add(new IVStore());
-            add(new IVStore());
-            add(new IVStore());
-        }
-    };
+    public Pokemon pokemon;
 
     public int top = 0;
     public int left = 0;
@@ -55,6 +44,12 @@ public class IVEVGuiContainer extends GuiContainer {
         this.xSize = 256;
         this.ySize = 192;
         this.pokemon = SlotApi.getSelectedPokemon();
+    }
+
+    @Override
+    public void initGui() {
+        this.pokemon = SlotApi.getSelectedPokemon();
+        super.initGui();
     }
 
     /**
@@ -119,8 +114,8 @@ public class IVEVGuiContainer extends GuiContainer {
         EntityPlayer player = Minecraft.getMinecraft().player;
         player.openGui(PixelmonInfoPlus.instance, IVEVGuiHandler.GUI_ID, player.getEntityWorld(), 0, 0, 0);
         IVEVGuiContainer.isOpen = true;
-        // 每次打开时，从服务器拉取 party 的 IVs
-        IVEVGuiContainer.getPartyIVSFromServer();
+        // 尝试更新缓存
+        PartyCache.updateCache(false);
     }
 
     /**
@@ -135,16 +130,28 @@ public class IVEVGuiContainer extends GuiContainer {
     }
 
     /**
-     * 从服务器获取宝可梦栏的所有宝可梦的 IVs
+     * 获取宝当前宝可梦的 IVStore 实例
+     * （此方法会在绘制时一直被调用，所以应该不用手动触发更新缓存）
+     *
+     * @return IVStore
      */
-    public static void getPartyIVSFromServer() {
-        PixelmonInfoPlusPacketHandler.sendGetIVSMessageRequestToServer();
-    }
-
     public IVStore getCurrentPokemonIVStore() {
-        return slots.size() != 6 ? this.pokemon.getIVs() : slots.get(SlotApi.getSelectedPokemonSlotId());
+        if (this.pokemon != null) {
+            // 获取当前宝可梦自身的本地 IVStore
+            IVStore localIVStore = this.pokemon.getIVs();
+            // 尝试根据 Pokemon UUID 从缓存处获取 IVStore
+            IVStore remoteIVStore = PartyCache.getPokemonIVStore(this.pokemon);
+            return Arrays.stream(localIVStore.getArray()).sum() == 0 ? remoteIVStore : localIVStore;
+        }
+        return new IVStore(new int[]{0, 0, 0, 0, 0, 0});
     }
 
+
+    /**
+     * 获取宝当前宝可梦的 EVStore 实例
+     *
+     * @return EVStore
+     */
     public EVStore getCurrentPokemonEVStore() {
         return this.pokemon.getEVs();
     }
@@ -171,8 +178,6 @@ public class IVEVGuiContainer extends GuiContainer {
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
-
-        this.pokemon = SlotApi.getSelectedPokemon();
 
         // 绘制完背景后，再绘制文字，以保证文字在最上层显示
         drawProgressText();
