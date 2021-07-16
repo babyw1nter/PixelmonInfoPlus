@@ -1,30 +1,18 @@
 package io.github.hhui64.PixelmonInfoPlus.network;
 
-import com.pixelmonmod.pixelmon.Pixelmon;
-import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
-import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
-import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
-import io.github.hhui64.PixelmonInfoPlus.gui.ivev.IVEVGuiContainer;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GetIVSMessageRequest implements IMessage {
+    private static final Logger logger = LogManager.getLogger("GetIVSMessageRequest");
     public NBTTagCompound compound;
 
     public GetIVSMessageRequest() {
@@ -50,7 +38,7 @@ public class GetIVSMessageRequest implements IMessage {
 
                 // 添加为一个计划任务(Scheduled Task)，在主服务器线程上执行操作
                 serverPlayer.getServerWorld().addScheduledTask(() -> {
-                    PixelmonInfoPlusPacketHandler.sendGetIVSMessageResponseToClient(serverPlayer);
+                    PixelmonInfoPlusPacketHandler.sendGetIVSMessageResponseToClient(serverPlayer, message.compound.getString("query"));
                 });
             }
 

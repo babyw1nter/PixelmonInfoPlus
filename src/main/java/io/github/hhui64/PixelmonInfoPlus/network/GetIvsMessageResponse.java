@@ -2,24 +2,23 @@ package io.github.hhui64.PixelmonInfoPlus.network;
 
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
-import io.github.hhui64.PixelmonInfoPlus.gui.ivev.IVEVGuiContainer;
+import io.github.hhui64.PixelmonInfoPlus.util.PartyCache;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GetIvsMessageResponse implements IMessage {
+    private static final Logger logger = LogManager.getLogger("GetIvsMessageResponse");
     public NBTTagCompound compound;
 
     public GetIvsMessageResponse() {
@@ -41,29 +40,35 @@ public class GetIvsMessageResponse implements IMessage {
         @Override
         public IMessage onMessage(GetIvsMessageResponse message, MessageContext ctx) {
             if (ctx.side == Side.CLIENT) {
-                List<IVStore> slots = new ArrayList<>();
+                List<UUID> listQueryIVSPokemonUUID;
+                Map<String, IVStore> pokemonsIVStore = new HashMap<>();
 
-                for (int i = 0; i < 6; i++) {
-                    String slotIVsKey = "slot:" + i;
-                    String slotIsHtKey = "slot:" + i + "ht";
+                if (!message.compound.getString("query").equals("")) {
+                    listQueryIVSPokemonUUID = Arrays.stream(message.compound.getString("query").split(":")).map(UUID::fromString).collect(Collectors.toList());
 
-                    int[] ivsArray = message.compound.getIntArray(slotIVsKey);
-                    int[] isHtArray = message.compound.getIntArray(slotIsHtKey);
+                    for (UUID pokemonUUID : listQueryIVSPokemonUUID) {
+                        int[] ivsIntArray = message.compound.getIntArray(pokemonUUID.toString());
+                        int[] ivsHtArray = message.compound.getIntArray(pokemonUUID + ":ht");
 
-                    IVStore ivs = new IVStore(ivsArray);
-                    ivs.setHyperTrained(StatsType.HP, isHtArray[0] != 0);
-                    ivs.setHyperTrained(StatsType.Attack, isHtArray[1] != 0);
-                    ivs.setHyperTrained(StatsType.Defence, isHtArray[2] != 0);
-                    ivs.setHyperTrained(StatsType.SpecialAttack, isHtArray[3] != 0);
-                    ivs.setHyperTrained(StatsType.SpecialDefence, isHtArray[4] != 0);
-                    ivs.setHyperTrained(StatsType.Speed, isHtArray[5] != 0);
+                        if (ivsIntArray.length > 0) {
+                            IVStore ivs = new IVStore(ivsIntArray);
+                            if (ivsHtArray.length > 0) {
+                                ivs.setHyperTrained(StatsType.HP, ivsHtArray[0] != 0);
+                                ivs.setHyperTrained(StatsType.Attack, ivsHtArray[1] != 0);
+                                ivs.setHyperTrained(StatsType.Defence, ivsHtArray[2] != 0);
+                                ivs.setHyperTrained(StatsType.SpecialAttack, ivsHtArray[3] != 0);
+                                ivs.setHyperTrained(StatsType.SpecialDefence, ivsHtArray[4] != 0);
+                                ivs.setHyperTrained(StatsType.Speed, ivsHtArray[5] != 0);
+                            }
 
-                    slots.add(ivs);
-                    // PixelmonInfoPlus.logger.info("宝可梦槽 {} 的 IVs {}", i, Arrays.toString(slots.get(i)));
+                            pokemonsIVStore.put(pokemonUUID.toString(), ivs);
+                        }
+                    }
                 }
 
                 Minecraft.getMinecraft().addScheduledTask(() -> {
-                    IVEVGuiContainer.slots = slots;
+                    // 添加进缓存
+                    PartyCache.addCache(pokemonsIVStore);
                 });
             }
             return null;
