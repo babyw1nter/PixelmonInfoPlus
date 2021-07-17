@@ -51,6 +51,15 @@ public class StatsPanelGuiContainer extends GuiContainer {
     }
 
     /**
+     * 获取坐标偏移值
+     *
+     * @return XY坐标
+     */
+    public int[] getOffsetXY() {
+        return new int[]{(this.width - this.xSize) / 2, (this.height - this.ySize) / 2};
+    }
+
+    /**
      * 重写 GuiContainer#keyTyped
      * 处理 GUI 的 KeyInputEvent
      *
@@ -156,11 +165,12 @@ public class StatsPanelGuiContainer extends GuiContainer {
 
     /**
      * 绘制背景层
+     * <p>
      * Draws the background layer of this container (behind the items).
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
+        int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
 
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
@@ -190,7 +200,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * 绘制进度条
      */
     public void drawProgress() {
-        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
+        int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
 
         IVStore ivs = this.getCurrentPokemonIVStore();
         EVStore evs = this.pokemon.getEVs();
@@ -207,7 +217,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * 绘制进度条上的文本
      */
     public void drawProgressText() {
-        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
+        int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
 
         if (this.pokemon != null) {
             IVStore ivs = this.getCurrentPokemonIVStore();
@@ -225,13 +235,13 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * 绘制宝可梦像素图标 & 属性图标
      */
     public void drawPokemonIcon() {
-        int offsetX = (this.width - this.xSize) / 2 + 16, offsetY = (this.height - this.ySize) / 2;
+        int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
 
         if (this.pokemon != null) {
             // 绑定材质
             GuiHelper.bindPokemonSprite(this.pokemon, this.mc);
             // 渲染宝可梦像素图标
-            GuiHelper.drawImageQuad(offsetX - 2, offsetY + 18.0D, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
+            GuiHelper.drawImageQuad(offsetX - 2 + 16, offsetY + 18.0D, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
 
             // 启用 OpenGL 色彩混合 & 设置颜色混合模式
             GlStateManager.enableBlend();
@@ -272,16 +282,16 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * 绘制宝可梦图鉴编号 & 等级文字层
      */
     public void drawPokemonPokedexNumberAndLevel() {
-        int offsetX = (this.width - this.xSize) / 2 + 47, offsetY = (this.height - this.ySize) / 2;
+        int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
         int y = offsetY + 11;
 
         if (this.pokemon != null) {
             if (this.pokemon.isEgg()) {
-                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " ???", offsetX - 47 + 8, y, 0xFFFFFF);
-                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " ???", offsetX + 19, y, 0xFFFFFF);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " ???", offsetX - 47 + 47 + 8, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " ???", offsetX + 19 + 47, y, 0xFFFFFF);
             } else {
-                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " " + this.pokemon.getSpecies().getNationalPokedexNumber(), offsetX - 47 + 8, y, 0xFFFFFF);
-                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " " + this.pokemon.getLevel(), offsetX + 19, y, 0xFFFFFF);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " " + this.pokemon.getSpecies().getNationalPokedexNumber(), offsetX - 47 + 47 + 8, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " " + this.pokemon.getLevel(), offsetX + 47 + 19, y, 0xFFFFFF);
             }
         }
     }
@@ -290,23 +300,23 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * 绘制宝可梦 info 文字层
      */
     public void drawPokemonName() {
-        int offsetX = (this.width - this.xSize) / 2 + 47, offsetY = (this.height - this.ySize) / 2;
-        int o = 11;
+        int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
+        int x = 11;
 
         if (this.pokemon != null) {
             String pokemonNickname = this.pokemon.getNickname();
 
             if (this.pokemon.isEgg()) {
-                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), offsetX, offsetY + 99, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), offsetX + 47, offsetY + 99, 0xFFFFFF);
 
             } else {
                 // int offset = pokemon.hasGigantamaxFactor() ? 9 : 0;
                 if (pokemonNickname != null && !pokemonNickname.equals("")) {
                     String ogName = "(" + this.pokemon.getSpecies().getLocalizedName() + ")";
-                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, offsetX, offsetY + 95, 0xFFFFFF);
-                    this.drawCenteredString(this.mc.fontRenderer, ogName, offsetX, offsetY + 104, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, offsetX + 47, offsetY + 95, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, ogName, offsetX + 47, offsetY + 104, 0xFFFFFF);
                 } else {
-                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), offsetX, offsetY + 99, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), offsetX + 47, offsetY + 99, 0xFFFFFF);
                 }
             }
         }
@@ -317,7 +327,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * 绘制 stats 文字层
      */
     public void drawPokemonStatsText() {
-        int offsetX = (this.width - this.xSize) / 2, offsetY = (this.height - this.ySize) / 2;
+        int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
         int x = offsetX + 104;
 
         if (this.pokemon != null) {
