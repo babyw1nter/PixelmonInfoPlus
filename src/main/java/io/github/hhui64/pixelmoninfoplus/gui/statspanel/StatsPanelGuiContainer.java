@@ -160,7 +160,10 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * @return EVStore
      */
     public EVStore getCurrentPokemonEVStore() {
-        return this.pokemon.getEVs();
+        if (this.pokemon != null) {
+            return this.pokemon.getEVs();
+        }
+        return new EVStore(new int[]{0, 0, 0, 0, 0, 0});
     }
 
     /**
@@ -177,8 +180,10 @@ public class StatsPanelGuiContainer extends GuiContainer {
         GlStateManager.blendFunc(0x0302, 0x0303);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
+        // 绘制背景材质
         this.mc.getTextureManager().bindTexture(background);
         this.drawTexturedModalRect(offsetX, offsetY, 0, 0, this.xSize, this.ySize);
+
         // 绘制进度条
         this.drawProgress();
         // 绘制进度条边框
@@ -203,7 +208,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
         int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
 
         IVStore ivs = this.getCurrentPokemonIVStore();
-        EVStore evs = this.pokemon.getEVs();
+        EVStore evs = this.getCurrentPokemonEVStore();
 
         int ivsProgressWidth = Math.toIntExact(Math.round(115 * ivs.getPercentage(0) / 100));
         double evsPercentage = Arrays.stream(evs.getArray()).sum() / 510.0 * 100.0;
@@ -393,7 +398,6 @@ public class StatsPanelGuiContainer extends GuiContainer {
             drawCenteredString(this.mc.fontRenderer, SpAtk, x + 129, offsetY + 72, SpAtkColor);
             drawCenteredString(this.mc.fontRenderer, SpDef, x + 129, offsetY + 93, SpDefColor);
             drawCenteredString(this.mc.fontRenderer, Spd, x + 129, offsetY + 113, SpdColor);
-
         }
     }
 }
