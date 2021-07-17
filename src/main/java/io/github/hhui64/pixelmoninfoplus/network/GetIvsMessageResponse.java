@@ -3,10 +3,9 @@ package io.github.hhui64.pixelmoninfoplus.network;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import io.github.hhui64.pixelmoninfoplus.util.PartyCache;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -17,22 +16,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GetIvsMessageResponse implements IMessage {
+public class GetIvsMessageResponse extends IMessageBase {
     private static final Logger logger = LogManager.getLogger("GetIvsMessageResponse");
-    public NBTTagCompound compound;
 
     public GetIvsMessageResponse() {
-    }
-
-
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        compound = ByteBufUtils.readTag(buf);
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeTag(buf, compound);
+        super();
     }
 
     public static class IvsMessageHandler implements IMessageHandler<GetIvsMessageResponse, IMessage> {
@@ -40,6 +28,11 @@ public class GetIvsMessageResponse implements IMessage {
         @Override
         public IMessage onMessage(GetIvsMessageResponse message, MessageContext ctx) {
             if (ctx.side == Side.CLIENT) {
+                // 判断协议版本
+                if (!message.isProtocolVersionMatched()) {
+                    Minecraft.getMinecraft().ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentTranslation("pixelmoninfoplus.protocol.versioncheckfialed"));
+                }
+
                 List<UUID> listQueryIVSPokemonUUID;
                 Map<String, IVStore> pokemonsIVStore = new HashMap<>();
 

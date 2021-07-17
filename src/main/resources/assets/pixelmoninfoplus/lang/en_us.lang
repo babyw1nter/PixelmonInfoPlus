@@ -14,3 +14,6 @@ gui.statspanel.speed.name=Spd
 
 # more
 mod.pixelmoninfoplus.name=Pixelmon Info Plus
+
+# message
+pixelmoninfoplus.protocol.versioncheckfialed=[PixelmonInfoPlus] Protocol version does not match, please update to the latest version.

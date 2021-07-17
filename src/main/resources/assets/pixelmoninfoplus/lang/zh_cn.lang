@@ -14,3 +14,6 @@ gui.statspanel.speed.name=速度
 
 # more
 mod.pixelmoninfoplus.name=Pixelmon Info Plus
+
+# message
+pixelmoninfoplus.protocol.versioncheckfialed=[PixelmonInfoPlus] 协议版本不匹配，请更新至最新版本。
