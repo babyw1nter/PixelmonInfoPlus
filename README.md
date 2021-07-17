@@ -14,7 +14,7 @@ Pixelmon Info Plus is a simple Minecraft Mod to show more info about Pixelmon. I
 
 ## Environment
 
-- Pixelmon 8.1.2 or later (8.2.0 is recommend)
+- Pixelmon Reforged 8.1.2 or later (8.2.0 is recommend)
 - Minecraft 1.12
 - Forge 14.23.5.2847 or later
 
