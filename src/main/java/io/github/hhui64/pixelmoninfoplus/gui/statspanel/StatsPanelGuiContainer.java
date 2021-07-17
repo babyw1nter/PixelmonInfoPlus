@@ -119,10 +119,13 @@ public class StatsPanelGuiContainer extends GuiContainer {
      */
     public static void open() {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        player.openGui(PixelmonInfoPlus.instance, StatsPanelGuiHandler.GUI_ID, player.getEntityWorld(), 0, 0, 0);
-        StatsPanelGuiContainer.isOpen = true;
-        // 尝试更新缓存
-        PartyCache.updateCache(false);
+
+        if (SlotApi.getTeam().size() > 0) {
+            player.openGui(PixelmonInfoPlus.instance, StatsPanelGuiHandler.GUI_ID, player.getEntityWorld(), 0, 0, 0);
+            StatsPanelGuiContainer.isOpen = true;
+            // 尝试更新缓存
+            PartyCache.updateCache(false);
+        }
     }
 
     /**
