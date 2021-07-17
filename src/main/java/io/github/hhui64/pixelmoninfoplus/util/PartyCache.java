@@ -17,7 +17,7 @@ import java.util.*;
 public class PartyCache {
     private static final Logger logger = LogManager.getLogger("PartyCache");
     /**
-     * 宝可梦的 IVStore 实例缓存 HashMap，使用 Pokemon UUID 为 key 值
+     * 宝可梦的 IVStore 实例缓存 HashMap，使用 Pokemon {@link UUID} 为 key 值
      */
     public static Map<String, IVStore> pokemonsIVStore = new HashMap<>();
 
@@ -26,8 +26,8 @@ public class PartyCache {
      * <p>
      * 存在则覆盖，不存在则添加
      *
-     * @param uuid    Pokemon UUID
-     * @param ivStore IVStore 实例
+     * @param uuid    Pokemon {@link UUID}
+     * @param ivStore {@link IVStore}
      */
     public static void addPokemonIVStore(String uuid, IVStore ivStore) {
         if (!PartyCache.pokemonsIVStore.containsKey(uuid)) {
@@ -42,8 +42,8 @@ public class PartyCache {
      * <p>
      * 存在则覆盖，不存在则添加
      *
-     * @param uuid    Pokemon UUID
-     * @param ivStore IVStore 实例
+     * @param uuid    Pokemon {@link UUID}
+     * @param ivStore {@link IVStore}
      */
     public static void addPokemonIVStore(UUID uuid, IVStore ivStore) {
         PartyCache.addPokemonIVStore(uuid.toString(), ivStore);
@@ -54,8 +54,8 @@ public class PartyCache {
      * <p>
      * 存在则覆盖，不存在则添加
      *
-     * @param pokemon Pokemon 实例
-     * @param ivStore IVStore 实例
+     * @param pokemon {@link Pokemon}
+     * @param ivStore {@link IVStore}
      */
     public static void addPokemonIVStore(Pokemon pokemon, IVStore ivStore) {
         PartyCache.addPokemonIVStore(pokemon.getUUID(), ivStore);
@@ -64,8 +64,8 @@ public class PartyCache {
     /**
      * 获取指定 Pokemon UUID 的 IVStore 实例
      *
-     * @param uuid Pokemon UUID
-     * @return IVStore 实例
+     * @param uuid Pokemon {@link UUID}
+     * @return {@link IVStore}
      */
     public static IVStore getPokemonIVStore(String uuid) {
         return pokemonsIVStore.containsKey(uuid) ? pokemonsIVStore.get(uuid) : new IVStore(new int[]{0, 0, 0, 0, 0, 0});
@@ -74,9 +74,9 @@ public class PartyCache {
     /**
      * 获取指定 Pokemon UUID 的 IVStore 实例
      *
-     * @param uuid         Pokemon UUID
+     * @param uuid         Pokemon {@link UUID}
      * @param shouldUpdate 尚未在缓存中找到时，是否向服务器请求更新缓存
-     * @return IVStore 实例
+     * @return {@link IVStore}
      */
     public static IVStore getPokemonIVStore(String uuid, boolean shouldUpdate) {
         if (shouldUpdate && !pokemonsIVStore.containsKey(uuid)) {
@@ -88,8 +88,8 @@ public class PartyCache {
     /**
      * 获取指定 Pokemon UUID 的 IVStore 实例
      *
-     * @param uuid Pokemon UUID
-     * @return IVStore 实例
+     * @param uuid Pokemon {@link UUID}
+     * @return {@link IVStore}
      */
     public static IVStore getPokemonIVStore(UUID uuid) {
         return PartyCache.getPokemonIVStore(uuid.toString());
@@ -98,9 +98,9 @@ public class PartyCache {
     /**
      * 获取指定 Pokemon UUID 的 IVStore 实例
      *
-     * @param uuid         Pokemon UUID
+     * @param uuid         Pokemon {@link UUID}
      * @param shouldUpdate 尚未在缓存中找到时，是否向服务器请求更新缓存
-     * @return IVStore 实例
+     * @return {@link IVStore}
      */
     public static IVStore getPokemonIVStore(UUID uuid, boolean shouldUpdate) {
         return PartyCache.getPokemonIVStore(uuid.toString(), shouldUpdate);
@@ -109,8 +109,8 @@ public class PartyCache {
     /**
      * 获取指定 Pokemon 实例的 IVStore 实例
      *
-     * @param pokemon Pokemon 实例
-     * @return IVStore 实例
+     * @param pokemon {@link Pokemon}
+     * @return {@link IVStore}
      */
     public static IVStore getPokemonIVStore(Pokemon pokemon) {
         return PartyCache.getPokemonIVStore(pokemon.getUUID());
@@ -119,9 +119,9 @@ public class PartyCache {
     /**
      * 获取指定 Pokemon 实例的 IVStore 实例
      *
-     * @param pokemon      Pokemon 实例
+     * @param pokemon      {@link Pokemon}
      * @param shouldUpdate 尚未在缓存中找到时，是否向服务器请求更新缓存
-     * @return IVStore 实例
+     * @return {@link IVStore}
      */
     public static IVStore getPokemonIVStore(Pokemon pokemon, boolean shouldUpdate) {
         return PartyCache.getPokemonIVStore(pokemon.getUUID(), shouldUpdate);
@@ -130,7 +130,7 @@ public class PartyCache {
     /**
      * 查询缓存中是否存在指定 Pokemon UUID 的 IVStore 实例
      *
-     * @param uuid Pokemon UUID
+     * @param uuid Pokemon {@link UUID}
      * @return true 为存在，false 为不存在
      */
     public static boolean hasPokemonIVStore(String uuid) {
@@ -140,8 +140,8 @@ public class PartyCache {
     /**
      * 查询缓存中是否存在指定 Pokemon UUID 的 IVStore 实例
      *
-     * @param uuid Pokemon UUID
-     * @return true 为存在，false 为不存在
+     * @param uuid Pokemon {@link UUID}
+     * @return {@code True} 为存在， {@code False} 为不存在
      */
     public static boolean hasPokemonIVStore(UUID uuid) {
         return PartyCache.hasPokemonIVStore(uuid.toString());
@@ -150,8 +150,8 @@ public class PartyCache {
     /**
      * 查询缓存中是否存在指定 Pokemon 实例的 IVStore 实例
      *
-     * @param pokemon Pokemon 实例
-     * @return true 为存在，false 为不存在
+     * @param pokemon {@link Pokemon}
+     * @return {@code True} 为存在， {@code False} 为不存在
      */
     public static boolean hasPokemonIVStore(Pokemon pokemon) {
         return PartyCache.hasPokemonIVStore(pokemon.getUUID());
@@ -168,8 +168,8 @@ public class PartyCache {
      * 更新缓存
      *
      * @param forceUpdate 是否强制更新<p>
-     *                    若此参数为 true，则向服务端请求当前宝可梦队伍的所有个体值数据。<p>
-     *                    若此参数为 false，则会首先列出当前宝可梦队伍中不存在缓存中的宝可梦的 UUID，然后向服务器请求这些宝可梦的个体值数据。
+     *                    若此参数为 {@code True}，则向服务端请求当前宝可梦队伍的所有个体值数据。<p>
+     *                    若此参数为 {@code False}，则会首先列出当前宝可梦队伍中不存在缓存中的宝可梦的 UUID，然后向服务器请求这些宝可梦的个体值数据。
      */
     public static void updateCache(boolean forceUpdate) {
         String[] localPartyPokemonsUUID = SlotApi.getTeamStringUUID();
