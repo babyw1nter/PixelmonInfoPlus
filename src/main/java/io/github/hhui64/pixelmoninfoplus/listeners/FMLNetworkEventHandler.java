@@ -1,7 +1,6 @@
-package io.github.hhui64.PixelmonInfoPlus.listeners;
+package io.github.hhui64.pixelmoninfoplus.listeners;
 
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
-import io.github.hhui64.PixelmonInfoPlus.util.PartyCache;
+import io.github.hhui64.pixelmoninfoplus.util.PartyCache;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 

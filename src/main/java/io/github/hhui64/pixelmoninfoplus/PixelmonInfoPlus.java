@@ -1,12 +1,7 @@
-package io.github.hhui64.PixelmonInfoPlus;
+package io.github.hhui64.pixelmoninfoplus;
 
-import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
-import io.github.hhui64.PixelmonInfoPlus.proxy.CommonProxy;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import io.github.hhui64.pixelmoninfoplus.proxy.CommonProxy;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -14,10 +9,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -31,7 +22,7 @@ public class PixelmonInfoPlus {
     public static Logger logger = LogManager.getLogger("PixelmonInfoPlus");
     public static MinecraftServer server = null;
 
-    @SidedProxy(clientSide = "io.github.hhui64.PixelmonInfoPlus.proxy.ClientProxy", serverSide = "io.github.hhui64.PixelmonInfoPlus.proxy.CommonProxy")
+    @SidedProxy(clientSide = "io.github.hhui64.pixelmoninfoplus.proxy.ClientProxy", serverSide = "io.github.hhui64.pixelmoninfoplus.proxy.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance(PixelmonInfoPlus.MODID)

@@ -1,4 +1,4 @@
-package io.github.hhui64.PixelmonInfoPlus.gui.ivev;
+package io.github.hhui64.pixelmoninfoplus.gui.statspanel;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.client.gui.GuiHelper;
@@ -7,10 +7,10 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.Entity1Base;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
-import io.github.hhui64.PixelmonInfoPlus.hotkey.HotKeyManager;
-import io.github.hhui64.PixelmonInfoPlus.pixelmon.SlotApi;
-import io.github.hhui64.PixelmonInfoPlus.util.PartyCache;
+import io.github.hhui64.pixelmoninfoplus.PixelmonInfoPlus;
+import io.github.hhui64.pixelmoninfoplus.keybinding.KeyBindingManager;
+import io.github.hhui64.pixelmoninfoplus.pixelmon.SlotApi;
+import io.github.hhui64.pixelmoninfoplus.util.PartyCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,11 +24,9 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
-public class IVEVGuiContainer extends GuiContainer {
-    private static final Logger logger = LogManager.getLogger("IVEVGuiContainer");
+public class StatsPanelGuiContainer extends GuiContainer {
+    private static final Logger logger = LogManager.getLogger("StatsPanelGuiContainer");
     /**
      * flag: GUI 是否已打开
      */
@@ -39,7 +37,7 @@ public class IVEVGuiContainer extends GuiContainer {
     public int top = 0;
     public int left = 0;
 
-    public IVEVGuiContainer(Container inventorySlotsIn) {
+    public StatsPanelGuiContainer(Container inventorySlotsIn) {
         super(inventorySlotsIn);
         this.xSize = 256;
         this.ySize = 192;
@@ -64,8 +62,8 @@ public class IVEVGuiContainer extends GuiContainer {
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
         // 按下 ESC 和绑定快捷键时，关闭 GUI。
-        if (HotKeyManager.showStatsPanel.getKeyCode() == keyCode || Keyboard.KEY_ESCAPE == keyCode) {
-            IVEVGuiContainer.close();
+        if (KeyBindingManager.showStatsPanel.getKeyCode() == keyCode || Keyboard.KEY_ESCAPE == keyCode) {
+            StatsPanelGuiContainer.close();
         }
 
         // 按下↑↓键时切换宝可梦槽，并获取当前选中的槽的宝可梦
@@ -94,7 +92,7 @@ public class IVEVGuiContainer extends GuiContainer {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         // 鼠标被点击时，关闭 GUI。
-        IVEVGuiContainer.close();
+        StatsPanelGuiContainer.close();
     }
 
     /**
@@ -112,8 +110,8 @@ public class IVEVGuiContainer extends GuiContainer {
      */
     public static void open() {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        player.openGui(PixelmonInfoPlus.instance, IVEVGuiHandler.GUI_ID, player.getEntityWorld(), 0, 0, 0);
-        IVEVGuiContainer.isOpen = true;
+        player.openGui(PixelmonInfoPlus.instance, StatsPanelGuiHandler.GUI_ID, player.getEntityWorld(), 0, 0, 0);
+        StatsPanelGuiContainer.isOpen = true;
         // 尝试更新缓存
         PartyCache.updateCache(false);
     }
@@ -123,9 +121,9 @@ public class IVEVGuiContainer extends GuiContainer {
      */
     public static void close() {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        if (IVEVGuiContainer.isOpen) {
+        if (StatsPanelGuiContainer.isOpen) {
             player.closeScreen();
-            IVEVGuiContainer.isOpen = false;
+            StatsPanelGuiContainer.isOpen = false;
         }
     }
 

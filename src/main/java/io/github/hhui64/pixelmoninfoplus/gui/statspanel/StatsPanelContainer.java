@@ -1,10 +1,10 @@
-package io.github.hhui64.PixelmonInfoPlus.gui.ivev;
+package io.github.hhui64.pixelmoninfoplus.gui.statspanel;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 
-public class IVEVContainer extends Container {
-    public IVEVContainer() {
+public class StatsPanelContainer extends Container {
+    public StatsPanelContainer() {
         super();
     }
 

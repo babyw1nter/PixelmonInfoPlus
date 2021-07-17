@@ -1,11 +1,11 @@
-package io.github.hhui64.PixelmonInfoPlus.network;
+package io.github.hhui64.pixelmoninfoplus.network;
 
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
+import io.github.hhui64.pixelmoninfoplus.PixelmonInfoPlus;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

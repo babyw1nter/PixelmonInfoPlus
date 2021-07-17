@@ -1,8 +1,5 @@
-package io.github.hhui64.PixelmonInfoPlus.proxy;
+package io.github.hhui64.pixelmoninfoplus.proxy;
 
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
-import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;

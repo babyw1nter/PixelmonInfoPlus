@@ -1,4 +1,4 @@
-package io.github.hhui64.PixelmonInfoPlus.pixelmon;
+package io.github.hhui64.pixelmoninfoplus.pixelmon;
 
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
@@ -6,8 +6,6 @@ import com.pixelmonmod.pixelmon.client.storage.ClientStorageManager;
 import com.pixelmonmod.pixelmon.client.gui.GuiPixelmonOverlay;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class SlotApi {
     public SlotApi() {

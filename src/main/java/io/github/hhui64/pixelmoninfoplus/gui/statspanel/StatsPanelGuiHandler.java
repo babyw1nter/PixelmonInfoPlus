@@ -1,6 +1,6 @@
-package io.github.hhui64.PixelmonInfoPlus.gui.ivev;
+package io.github.hhui64.pixelmoninfoplus.gui.statspanel;
 
-import io.github.hhui64.PixelmonInfoPlus.PixelmonInfoPlus;
+import io.github.hhui64.pixelmoninfoplus.PixelmonInfoPlus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -8,15 +8,15 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import javax.annotation.Nullable;
 
-public class IVEVGuiHandler implements IGuiHandler {
+public class StatsPanelGuiHandler implements IGuiHandler {
     public static final int GUI_ID = 1;
 
-    public IVEVGuiHandler() {
+    public StatsPanelGuiHandler() {
 
     }
 
     public static void init() {
-        NetworkRegistry.INSTANCE.registerGuiHandler(PixelmonInfoPlus.instance, new IVEVGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(PixelmonInfoPlus.instance, new StatsPanelGuiHandler());
     }
 
     /**
@@ -35,7 +35,7 @@ public class IVEVGuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch (ID) {
             case GUI_ID:
-                return new IVEVContainer();
+                return new StatsPanelContainer();
             default:
                 return null;
         }
@@ -59,7 +59,7 @@ public class IVEVGuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch (ID) {
             case GUI_ID:
-                return new IVEVGuiContainer(new IVEVContainer());
+                return new StatsPanelGuiContainer(new StatsPanelContainer());
             default:
                 return null;
         }

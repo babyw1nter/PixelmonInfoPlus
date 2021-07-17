@@ -1,9 +1,9 @@
-package io.github.hhui64.PixelmonInfoPlus.util;
+package io.github.hhui64.pixelmoninfoplus.util;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
-import io.github.hhui64.PixelmonInfoPlus.network.PixelmonInfoPlusPacketHandler;
-import io.github.hhui64.PixelmonInfoPlus.pixelmon.SlotApi;
+import io.github.hhui64.pixelmoninfoplus.network.PixelmonInfoPlusPacketHandler;
+import io.github.hhui64.pixelmoninfoplus.pixelmon.SlotApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,4 +1,4 @@
-package io.github.hhui64.PixelmonInfoPlus.network;
+package io.github.hhui64.pixelmoninfoplus.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
