@@ -7,8 +7,8 @@ import com.pixelmonmod.pixelmon.client.gui.GuiPixelmonOverlay;
 
 import java.util.List;
 
-public class SlotApi {
-    public SlotApi() {
+public class PartyApi {
+    public PartyApi() {
 
     }
 
@@ -40,7 +40,7 @@ public class SlotApi {
     }
 
     public static String[] getTeamStringUUID() {
-        return SlotApi.getTeam().stream().map(pokemon -> pokemon.getUUID().toString()).toArray(String[]::new);
+        return PartyApi.getTeam().stream().map(pokemon -> pokemon.getUUID().toString()).toArray(String[]::new);
     }
 
     /**

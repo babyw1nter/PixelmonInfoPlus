@@ -9,7 +9,7 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import io.github.hhui64.pixelmoninfoplus.PixelmonInfoPlus;
 import io.github.hhui64.pixelmoninfoplus.keybinding.KeyBindingManager;
-import io.github.hhui64.pixelmoninfoplus.pixelmon.SlotApi;
+import io.github.hhui64.pixelmoninfoplus.pixelmon.PartyApi;
 import io.github.hhui64.pixelmoninfoplus.util.PartyCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -41,12 +41,12 @@ public class StatsPanelGuiContainer extends GuiContainer {
         super(inventorySlotsIn);
         this.xSize = 256;
         this.ySize = 192;
-        this.pokemon = SlotApi.getSelectedPokemon();
+        this.pokemon = PartyApi.getSelectedPokemon();
     }
 
     @Override
     public void initGui() {
-        this.pokemon = SlotApi.getSelectedPokemon();
+        this.pokemon = PartyApi.getSelectedPokemon();
         super.initGui();
     }
 
@@ -85,7 +85,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
                     GuiPixelmonOverlay.selectNextPixelmon();
                     break;
             }
-            this.pokemon = SlotApi.getSelectedPokemon();
+            this.pokemon = PartyApi.getSelectedPokemon();
         }
     }
 
@@ -120,7 +120,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
     public static void open() {
         EntityPlayer player = Minecraft.getMinecraft().player;
 
-        if (SlotApi.getTeam().size() > 0) {
+        if (PartyApi.getTeam().size() > 0) {
             player.openGui(PixelmonInfoPlus.instance, StatsPanelGuiHandler.GUI_ID, player.getEntityWorld(), 0, 0, 0);
             StatsPanelGuiContainer.isOpen = true;
             // 尝试更新缓存

@@ -3,7 +3,7 @@ package io.github.hhui64.pixelmoninfoplus.util;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import io.github.hhui64.pixelmoninfoplus.network.PixelmonInfoPlusPacketHandler;
-import io.github.hhui64.pixelmoninfoplus.pixelmon.SlotApi;
+import io.github.hhui64.pixelmoninfoplus.pixelmon.PartyApi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -172,7 +172,7 @@ public class PartyCache {
      *                    若此参数为 {@code False}，则会首先列出当前宝可梦队伍中不存在缓存中的宝可梦的 UUID，然后向服务器请求这些宝可梦的个体值数据。
      */
     public static void updateCache(boolean forceUpdate) {
-        String[] localPartyPokemonsUUID = SlotApi.getTeamStringUUID();
+        String[] localPartyPokemonsUUID = PartyApi.getTeamStringUUID();
         List<String> nonExistentPokemonUUID = new ArrayList<>();
 
         if (forceUpdate) {
