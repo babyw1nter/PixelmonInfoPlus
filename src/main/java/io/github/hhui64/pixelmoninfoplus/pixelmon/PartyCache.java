@@ -208,7 +208,7 @@ public class PartyCache {
     /**
      * 添加缓存
      * <p>
-     * 此方法不会覆盖缓存 HashMap，而是存在的则覆盖，不存在的则添加
+     * 此方法不会重复添加缓存 HashMap 中已存在的成员，而是存在的覆盖，不存在的则添加
      *
      * @param pokemonsIVStore pokemonsIVStore HashMap
      */
