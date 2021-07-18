@@ -3,10 +3,12 @@ package io.github.hhui64.pixelmoninfoplus.gui.statspanel;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.client.gui.GuiHelper;
 import com.pixelmonmod.pixelmon.client.gui.GuiPixelmonOverlay;
+import com.pixelmonmod.pixelmon.client.gui.GuiResources;
 import com.pixelmonmod.pixelmon.entities.pixelmon.Entity1Base;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
+import com.pixelmonmod.pixelmon.enums.EnumType;
 import io.github.hhui64.pixelmoninfoplus.PixelmonInfoPlus;
 import io.github.hhui64.pixelmoninfoplus.keybinding.KeyBindingManager;
 import io.github.hhui64.pixelmoninfoplus.pixelmon.PartyApi;
@@ -219,38 +221,39 @@ public class StatsPanelGuiContainer extends GuiContainer {
             // 绑定材质
             GuiHelper.bindPokemonSprite(this.pokemon, this.mc);
             // 渲染宝可梦像素图标
-            GuiHelper.drawImageQuad(offsetX - 2 + 16, offsetY + 18.0D, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
             GuiHelper.drawImageQuad(offsetX - 2 + 16, offsetY + 18.0D + 22, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
 
             // 启用 OpenGL 色彩混合 & 设置颜色混合模式
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(0x0302, 0x0303);
 
-//            if (!this.pokemon.isEgg()) {
-//                EnumType type1 = this.pokemon.getBaseStats().getType1();
-//                EnumType type2 = this.pokemon.getBaseStats().getType2();
-//                float x = type1.textureX;
-//                float y = type1.textureY;
-//                float x1 = 0.0F;
-//                float y1 = 0.0F;
-//                if (type2 != null) {
-//                    x1 = type2.textureX;
-//                    y1 = type2.textureY;
-//                }
-//
-//                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//
-//                // 绑定属性图标材质
-//                this.mc.getTextureManager().bindTexture(GuiResources.types);
-//                // 渲染宝可梦属性图标
-//                if (type2 != EnumType.Mystery && type2 != null) {
-//                    GuiHelper.drawImageQuad(offsetX + 20 + 8.0D, offsetY + 25, 21.0D, 21.0F, (double) (x1 / 1792.0F), (double) (y1 / 768.0F), (double) ((x1 + 240.0F) / 1792.0F), (double) ((y1 + 240.0F) / 768.0F), this.zLevel);
-//                    GuiHelper.drawImageQuad(offsetX + 20 - 8.0D, offsetY + 25, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
-//                } else {
-//                    // 单(主)属性
-//                    GuiHelper.drawImageQuad(offsetX + 20, offsetY + 25, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
-//                }
-//            }
+            if (!this.pokemon.isEgg()) {
+                EnumType type1 = this.pokemon.getBaseStats().getType1();
+                EnumType type2 = this.pokemon.getBaseStats().getType2();
+                float x = type1.textureX;
+                float y = type1.textureY;
+                float x1 = 0.0F;
+                float y1 = 0.0F;
+                if (type2 != null) {
+                    x1 = type2.textureX;
+                    y1 = type2.textureY;
+                }
+
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+                // 绑定属性图标材质
+                this.mc.getTextureManager().bindTexture(GuiResources.types);
+
+                // 渲染宝可梦属性图标
+                if (type2 != EnumType.Mystery && type2 != null) {
+                    // 双属性
+                    GuiHelper.drawImageQuad(offsetX + 44 - 18, offsetY + 26, 21.0D, 21.0F, (double) (x1 / 1792.0F), (double) (y1 / 768.0F), (double) ((x1 + 240.0F) / 1792.0F), (double) ((y1 + 240.0F) / 768.0F), this.zLevel);
+                    GuiHelper.drawImageQuad(offsetX + 44 + 4, offsetY + 26, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
+                } else {
+                    // 单(主)属性
+                    GuiHelper.drawImageQuad(offsetX + 44 - 7.0D, offsetY + 26, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
+                }
+            }
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.disableBlend();
