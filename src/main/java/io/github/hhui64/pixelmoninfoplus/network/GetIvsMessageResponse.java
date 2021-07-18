@@ -2,7 +2,7 @@ package io.github.hhui64.pixelmoninfoplus.network;
 
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
-import io.github.hhui64.pixelmoninfoplus.util.PartyCache;
+import io.github.hhui64.pixelmoninfoplus.pixelmon.PartyCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentTranslation;

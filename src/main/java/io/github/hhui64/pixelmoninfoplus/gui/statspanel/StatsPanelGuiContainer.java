@@ -10,7 +10,7 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import io.github.hhui64.pixelmoninfoplus.PixelmonInfoPlus;
 import io.github.hhui64.pixelmoninfoplus.keybinding.KeyBindingManager;
 import io.github.hhui64.pixelmoninfoplus.pixelmon.PartyApi;
-import io.github.hhui64.pixelmoninfoplus.util.PartyCache;
+import io.github.hhui64.pixelmoninfoplus.pixelmon.PartyCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
