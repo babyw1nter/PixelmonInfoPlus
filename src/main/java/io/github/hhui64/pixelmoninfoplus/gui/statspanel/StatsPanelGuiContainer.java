@@ -161,8 +161,6 @@ public class StatsPanelGuiContainer extends GuiContainer {
 
         // 绘制进度条
         this.drawProgress();
-        // 绘制进度条边框
-        this.drawTexturedModalRect(offsetX + 105, offsetY + 152, 105, 208, 137, 31);
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
@@ -189,8 +187,13 @@ public class StatsPanelGuiContainer extends GuiContainer {
         double evsPercentage = Arrays.stream(evs.getArray()).sum() / 510.0 * 100.0;
         int evsProgressWidth = Math.toIntExact(Math.round(115 * evsPercentage / 100));
 
+        // 绘制进度条百分比宽度矩形
         this.drawTexturedModalRect(offsetX + 126, offsetY + 152, 126, 243, ivsProgressWidth, 12);
         this.drawTexturedModalRect(offsetX + 126, offsetY + 169, 126, 243, evsProgressWidth, 12);
+
+        // 绘制进度条边框
+        this.drawTexturedModalRect(offsetX + 105, offsetY + 151, 105, 208, 137, 31);
+
     }
 
     /**
@@ -206,8 +209,9 @@ public class StatsPanelGuiContainer extends GuiContainer {
 
             String strIVs = this.pokemon.isEgg() ? "???/??? (???%)" : Arrays.stream(ivs.getArray()).sum() + "/186 (" + Math.round(ivs.getPercentage(0)) + "%)";
             String strEVs = this.pokemon.isEgg() ? "???/??? (???%)" : Arrays.stream(evs.getArray()).sum() + "/510 (" + Math.round(evsPercentage) + "%)";
-            this.drawCenteredString(this.mc.fontRenderer, strIVs, offsetX + 183, offsetY + 155, 0xFFFFFF);
-            this.drawCenteredString(this.mc.fontRenderer, strEVs, offsetX + 183, offsetY + 172, 0xFFFFFF);
+
+            this.drawCenteredString(this.mc.fontRenderer, strIVs, offsetX + 183, offsetY + 154, 0xFFFFFF);
+            this.drawCenteredString(this.mc.fontRenderer, strEVs, offsetX + 183, offsetY + 171, 0xFFFFFF);
         }
     }
 
@@ -221,7 +225,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
             // 绑定材质
             GuiHelper.bindPokemonSprite(this.pokemon, this.mc);
             // 渲染宝可梦像素图标
-            GuiHelper.drawImageQuad(offsetX - 2 + 16, offsetY + 18.0D + 22, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
+            GuiHelper.drawImageQuad(offsetX + 14, offsetY + 18.0D + 24, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
 
             // 启用 OpenGL 色彩混合 & 设置颜色混合模式
             GlStateManager.enableBlend();
