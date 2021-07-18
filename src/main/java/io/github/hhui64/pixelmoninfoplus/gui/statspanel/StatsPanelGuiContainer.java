@@ -251,11 +251,11 @@ public class StatsPanelGuiContainer extends GuiContainer {
                 // 渲染宝可梦属性图标
                 if (type2 != EnumType.Mystery && type2 != null) {
                     // 双属性
-                    GuiHelper.drawImageQuad(offsetX + 44 - 18, offsetY + 26, 21.0D, 21.0F, (double) (x1 / 1792.0F), (double) (y1 / 768.0F), (double) ((x1 + 240.0F) / 1792.0F), (double) ((y1 + 240.0F) / 768.0F), this.zLevel);
-                    GuiHelper.drawImageQuad(offsetX + 44 + 5, offsetY + 26, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
+                    GuiHelper.drawImageQuad(offsetX + 44 - 18, offsetY + 26, 21.0D, 21.0F, x1 / 1792.0F, y1 / 768.0F, (x1 + 240.0F) / 1792.0F, (y1 + 240.0F) / 768.0F, this.zLevel);
+                    GuiHelper.drawImageQuad(offsetX + 44 + 5, offsetY + 26, 21.0D, 21.0F, x / 1792.0F, y / 768.0F, (x + 240.0F) / 1792.0F, (y + 240.0F) / 768.0F, this.zLevel);
                 } else {
                     // 单(主)属性
-                    GuiHelper.drawImageQuad(offsetX + 44 - 7.0D, offsetY + 26, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
+                    GuiHelper.drawImageQuad(offsetX + 44 - 7.0D, offsetY + 26, 21.0D, 21.0F, x / 1792.0F, y / 768.0F, (x + 240.0F) / 1792.0F, (y + 240.0F) / 768.0F, this.zLevel);
                 }
             }
 
@@ -319,6 +319,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
     public void drawPokemonStatsText() {
         int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
         int x = offsetX + 104;
+        int[] y = Arrays.stream((new int[]{12, 33, 53, 72, 93, 113})).map(i -> i + offsetY).toArray();
 
         if (this.pokemon != null) {
             IVStore ivs = PartyApi.getCurrentPokemonIVStore(this.pokemon);
@@ -353,36 +354,36 @@ public class StatsPanelGuiContainer extends GuiContainer {
             int SpdColor = this.pokemon.getNature().increasedStat == StatsType.Speed ? 65280 : (this.pokemon.getNature().decreasedStat == StatsType.Speed ? 16724016 : 0xFFFFFF);
 
             // 绘制标题
-            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.hp.name"), x, offsetY + 12, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.attack.name"), x, offsetY + 33, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.defense.name"), x, offsetY + 53, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.spattack.name"), x, offsetY + 72, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.spdefense.name"), x, offsetY + 93, 0xFFFFFF);
-            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.speed.name"), x, offsetY + 113, 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.hp.name"), x, y[0], 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.attack.name"), x, y[1], 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.defense.name"), x, y[2], 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.spattack.name"), x, y[3], 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.spdefense.name"), x, y[4], 0xFFFFFF);
+            drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.speed.name"), x, y[5], 0xFFFFFF);
 
             // 绘制数值 IVS
-            drawCenteredString(this.mc.fontRenderer, IVsHp, x + 55, offsetY + 12, ivs.isHyperTrained(StatsType.HP) ? 0xFF55FF : 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsAtk, x + 55, offsetY + 33, ivs.isHyperTrained(StatsType.Attack) ? 0xFF55FF : 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsDef, x + 55, offsetY + 53, ivs.isHyperTrained(StatsType.Defence) ? 0xFF55FF : 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsSpAtk, x + 55, offsetY + 72, ivs.isHyperTrained(StatsType.SpecialAttack) ? 0xFF55FF : 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsSpDef, x + 55, offsetY + 93, ivs.isHyperTrained(StatsType.SpecialDefence) ? 0xFF55FF : 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, IVsSpd, x + 55, offsetY + 113, ivs.isHyperTrained(StatsType.Speed) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsHp, x + 55, y[0], ivs.isHyperTrained(StatsType.HP) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsAtk, x + 55, y[1], ivs.isHyperTrained(StatsType.Attack) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsDef, x + 55, y[2], ivs.isHyperTrained(StatsType.Defence) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpAtk, x + 55, y[3], ivs.isHyperTrained(StatsType.SpecialAttack) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpDef, x + 55, y[4], ivs.isHyperTrained(StatsType.SpecialDefence) ? 0xFF55FF : 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, IVsSpd, x + 55, y[5], ivs.isHyperTrained(StatsType.Speed) ? 0xFF55FF : 0xFFFFFF);
 
             // 绘制数值 EVS
-            drawCenteredString(this.mc.fontRenderer, EVsHp, x + 92, offsetY + 12, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, EVsAtk, x + 92, offsetY + 33, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, EVsDef, x + 92, offsetY + 53, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, EVsSpAtk, x + 92, offsetY + 72, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, EVsSpDef, x + 92, offsetY + 93, 0xFFFFFF);
-            drawCenteredString(this.mc.fontRenderer, EVsSpd, x + 92, offsetY + 113, 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsHp, x + 92, y[0], 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsAtk, x + 92, y[1], 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsDef, x + 92, y[2], 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsSpAtk, x + 92, y[3], 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsSpDef, x + 92, y[4], 0xFFFFFF);
+            drawCenteredString(this.mc.fontRenderer, EVsSpd, x + 92, y[5], 0xFFFFFF);
 
             // 绘制数值 ST
-            drawCenteredString(this.mc.fontRenderer, Hp, x + 129, offsetY + 12, HpColor);
-            drawCenteredString(this.mc.fontRenderer, Atk, x + 129, offsetY + 33, AtkColor);
-            drawCenteredString(this.mc.fontRenderer, Def, x + 129, offsetY + 53, DefColor);
-            drawCenteredString(this.mc.fontRenderer, SpAtk, x + 129, offsetY + 72, SpAtkColor);
-            drawCenteredString(this.mc.fontRenderer, SpDef, x + 129, offsetY + 93, SpDefColor);
-            drawCenteredString(this.mc.fontRenderer, Spd, x + 129, offsetY + 113, SpdColor);
+            drawCenteredString(this.mc.fontRenderer, Hp, x + 129, y[0], HpColor);
+            drawCenteredString(this.mc.fontRenderer, Atk, x + 129, y[1], AtkColor);
+            drawCenteredString(this.mc.fontRenderer, Def, x + 129, y[2], DefColor);
+            drawCenteredString(this.mc.fontRenderer, SpAtk, x + 129, y[3], SpAtkColor);
+            drawCenteredString(this.mc.fontRenderer, SpDef, x + 129, y[4], SpDefColor);
+            drawCenteredString(this.mc.fontRenderer, Spd, x + 129, y[5], SpdColor);
         }
     }
 }
