@@ -189,8 +189,8 @@ public class StatsPanelGuiContainer extends GuiContainer {
         double evsPercentage = Arrays.stream(evs.getArray()).sum() / 510.0 * 100.0;
         int evsProgressWidth = Math.toIntExact(Math.round(115 * evsPercentage / 100));
 
-        this.drawTexturedModalRect(offsetX + 126, offsetY + 153, 126, 243, ivsProgressWidth, 12);
-        this.drawTexturedModalRect(offsetX + 126, offsetY + 170, 126, 243, evsProgressWidth, 12);
+        this.drawTexturedModalRect(offsetX + 126, offsetY + 152, 126, 243, ivsProgressWidth, 12);
+        this.drawTexturedModalRect(offsetX + 126, offsetY + 169, 126, 243, evsProgressWidth, 12);
     }
 
     /**
@@ -248,7 +248,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
                 if (type2 != EnumType.Mystery && type2 != null) {
                     // 双属性
                     GuiHelper.drawImageQuad(offsetX + 44 - 18, offsetY + 26, 21.0D, 21.0F, (double) (x1 / 1792.0F), (double) (y1 / 768.0F), (double) ((x1 + 240.0F) / 1792.0F), (double) ((y1 + 240.0F) / 768.0F), this.zLevel);
-                    GuiHelper.drawImageQuad(offsetX + 44 + 4, offsetY + 26, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
+                    GuiHelper.drawImageQuad(offsetX + 44 + 5, offsetY + 26, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
                 } else {
                     // 单(主)属性
                     GuiHelper.drawImageQuad(offsetX + 44 - 7.0D, offsetY + 26, 21.0D, 21.0F, (double) (x / 1792.0F), (double) (y / 768.0F), (double) ((x + 240.0F) / 1792.0F), (double) ((y + 240.0F) / 768.0F), this.zLevel);
@@ -265,15 +265,17 @@ public class StatsPanelGuiContainer extends GuiContainer {
      */
     public void drawPokemonPokedexNumberAndLevel() {
         int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
-        int y = offsetY + 11;
+        int x1 = offsetX + 8;
+        int x2 = offsetX + 68;
+        int y = offsetY + 10;
 
         if (this.pokemon != null) {
             if (this.pokemon.isEgg()) {
-                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " ???", offsetX - 47 + 47 + 8, y, 0xFFFFFF);
-                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " ???", offsetX + 19 + 47, y, 0xFFFFFF);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " ???", x1, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " ???", x2, y, 0xFFFFFF);
             } else {
-                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " " + this.pokemon.getSpecies().getNationalPokedexNumber(), offsetX - 47 + 47 + 8, y, 0xFFFFFF);
-                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " " + this.pokemon.getLevel(), offsetX + 47 + 19, y, 0xFFFFFF);
+                drawString(this.mc.fontRenderer, I18n.format("gui.statspanel.number") + " " + this.pokemon.getSpecies().getNationalPokedexNumber(), x1, y, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, I18n.format("gui.statspanel.lvl") + " " + this.pokemon.getLevel(), x2, y, 0xFFFFFF);
             }
         }
     }
@@ -283,21 +285,24 @@ public class StatsPanelGuiContainer extends GuiContainer {
      */
     public void drawPokemonName() {
         int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
-        int x = 11;
+        int x = offsetX + 48;
+        int y = offsetY + 116;
+        int y1 = offsetY + 112;
+        int y2 = offsetY + 121;
 
         if (this.pokemon != null) {
             String pokemonNickname = this.pokemon.getNickname();
 
             if (this.pokemon.isEgg()) {
-                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), offsetX + 47, offsetY + 99 + 17, 0xFFFFFF);
+                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), x, y, 0xFFFFFF);
             } else {
                 // int offset = pokemon.hasGigantamaxFactor() ? 9 : 0;
                 if (pokemonNickname != null && !pokemonNickname.equals("")) {
                     String ogName = "(" + this.pokemon.getSpecies().getLocalizedName() + ")";
-                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, offsetX + 47, offsetY + 95 + 17, 0xFFFFFF);
-                    this.drawCenteredString(this.mc.fontRenderer, ogName, offsetX + 47, offsetY + 104 + 17, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, x, y1, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, ogName, x, y2, 0xFFFFFF);
                 } else {
-                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), offsetX + 47, offsetY + 99 + 17, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), x, y, 0xFFFFFF);
                 }
             }
         }
