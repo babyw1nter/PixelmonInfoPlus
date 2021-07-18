@@ -33,21 +33,21 @@ public class GetIVSMessageRequest extends IMessageBase {
             if (ctx.side == Side.SERVER) {
                 // 获取向服务器发送数据包的玩家
                 EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
+
                 String queryIVSPokemonUUID = message.compound.getString("query");
+                List<UUID> listQueryIVSPokemonUUID = Arrays.stream(queryIVSPokemonUUID.split(":")).map(UUID::fromString).collect(Collectors.toList());
+
+                if (queryIVSPokemonUUID.equals("") || listQueryIVSPokemonUUID.size() == 0 || listQueryIVSPokemonUUID.size() > 6) {
+                    return null;
+                }
+
                 GetIvsMessageResponse getIvsMessageResponse = new GetIvsMessageResponse();
+                getIvsMessageResponse.compound.setString("query", queryIVSPokemonUUID);
 
                 // 添加为一个计划任务(Scheduled Task)，在主服务器线程上执行操作
                 serverPlayer.getServerWorld().addScheduledTask(() -> {
                     // 获取玩家的宝可梦 party
                     PlayerPartyStorage playerPartyStorage = Pixelmon.storageManager.getParty(serverPlayer);
-
-                    List<UUID> listQueryIVSPokemonUUID = new ArrayList<>();
-                    if (!queryIVSPokemonUUID.equals("")) {
-                        listQueryIVSPokemonUUID = Arrays.stream(queryIVSPokemonUUID.split(":")).map(UUID::fromString).collect(Collectors.toList());
-                        getIvsMessageResponse.compound.setString("query", queryIVSPokemonUUID);
-                    } else {
-                        getIvsMessageResponse.compound.setString("query", "");
-                    }
 
                     if (playerPartyStorage != null) {
                         for (UUID pokemonUUID : listQueryIVSPokemonUUID) {
@@ -59,12 +59,14 @@ public class GetIVSMessageRequest extends IMessageBase {
                                 getIvsMessageResponse.compound.setIntArray(pokemon.getUUID().toString(), ivs.getArray());
                                 getIvsMessageResponse.compound.setIntArray(
                                         pokemon.getUUID().toString() + ":ht",
-                                        new int[]{ivs.isHyperTrained(StatsType.HP) ? 1 : 0,
+                                        new int[]{
+                                                ivs.isHyperTrained(StatsType.HP) ? 1 : 0,
                                                 ivs.isHyperTrained(StatsType.Attack) ? 1 : 0,
                                                 ivs.isHyperTrained(StatsType.Defence) ? 1 : 0,
                                                 ivs.isHyperTrained(StatsType.SpecialAttack) ? 1 : 0,
                                                 ivs.isHyperTrained(StatsType.SpecialDefence) ? 1 : 0,
-                                                ivs.isHyperTrained(StatsType.Speed) ? 1 : 0}
+                                                ivs.isHyperTrained(StatsType.Speed) ? 1 : 0
+                                        }
                                 );
                             } else {
                                 getIvsMessageResponse.compound.setIntArray(String.valueOf(pokemonUUID), new IVStore(new int[]{0, 0, 0, 0, 0, 0}).getArray());
@@ -77,7 +79,6 @@ public class GetIVSMessageRequest extends IMessageBase {
                 });
             }
 
-            // 回应数据包
             return null;
         }
     }

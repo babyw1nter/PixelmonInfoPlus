@@ -31,39 +31,43 @@ public class GetIvsMessageResponse extends IMessageBase {
                 // 判断协议版本
                 if (!message.isProtocolVersionMatched()) {
                     Minecraft.getMinecraft().ingameGUI.addChatMessage(ChatType.CHAT, new TextComponentTranslation("pixelmoninfoplus.protocol.versioncheckfialed"));
+                    return null;
                 }
 
-                List<UUID> listQueryIVSPokemonUUID;
+                String queryIVSPokemonUUID = message.compound.getString("query");
+                List<UUID> listQueryIVSPokemonUUID = Arrays.stream(queryIVSPokemonUUID.split(":")).map(UUID::fromString).collect(Collectors.toList());
+
+                if (queryIVSPokemonUUID.equals("") || listQueryIVSPokemonUUID.size() == 0 || listQueryIVSPokemonUUID.size() > 6) {
+                    return null;
+                }
+
                 Map<String, IVStore> pokemonsIVStore = new HashMap<>();
+                for (UUID pokemonUUID : listQueryIVSPokemonUUID) {
+                    int[] ivsIntArray = message.compound.getIntArray(pokemonUUID.toString());
+                    int[] ivsHtArray = message.compound.getIntArray(pokemonUUID + ":ht");
 
-                if (!message.compound.getString("query").equals("")) {
-                    listQueryIVSPokemonUUID = Arrays.stream(message.compound.getString("query").split(":")).map(UUID::fromString).collect(Collectors.toList());
-
-                    for (UUID pokemonUUID : listQueryIVSPokemonUUID) {
-                        int[] ivsIntArray = message.compound.getIntArray(pokemonUUID.toString());
-                        int[] ivsHtArray = message.compound.getIntArray(pokemonUUID + ":ht");
-
-                        if (ivsIntArray.length > 0) {
-                            IVStore ivs = new IVStore(ivsIntArray);
-                            if (ivsHtArray.length > 0) {
-                                ivs.setHyperTrained(StatsType.HP, ivsHtArray[0] != 0);
-                                ivs.setHyperTrained(StatsType.Attack, ivsHtArray[1] != 0);
-                                ivs.setHyperTrained(StatsType.Defence, ivsHtArray[2] != 0);
-                                ivs.setHyperTrained(StatsType.SpecialAttack, ivsHtArray[3] != 0);
-                                ivs.setHyperTrained(StatsType.SpecialDefence, ivsHtArray[4] != 0);
-                                ivs.setHyperTrained(StatsType.Speed, ivsHtArray[5] != 0);
-                            }
-
-                            pokemonsIVStore.put(pokemonUUID.toString(), ivs);
+                    if (ivsIntArray.length > 0) {
+                        IVStore ivs = new IVStore(ivsIntArray);
+                        if (ivsHtArray.length > 0) {
+                            ivs.setHyperTrained(StatsType.HP, ivsHtArray[0] != 0);
+                            ivs.setHyperTrained(StatsType.Attack, ivsHtArray[1] != 0);
+                            ivs.setHyperTrained(StatsType.Defence, ivsHtArray[2] != 0);
+                            ivs.setHyperTrained(StatsType.SpecialAttack, ivsHtArray[3] != 0);
+                            ivs.setHyperTrained(StatsType.SpecialDefence, ivsHtArray[4] != 0);
+                            ivs.setHyperTrained(StatsType.Speed, ivsHtArray[5] != 0);
                         }
+
+                        pokemonsIVStore.put(pokemonUUID.toString(), ivs);
                     }
                 }
+
 
                 Minecraft.getMinecraft().addScheduledTask(() -> {
                     // 添加进缓存
                     PartyCache.addCache(pokemonsIVStore);
                 });
             }
+
             return null;
         }
     }
