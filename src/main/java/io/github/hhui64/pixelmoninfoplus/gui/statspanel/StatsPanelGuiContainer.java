@@ -31,7 +31,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
      * flag: GUI 是否已打开
      */
     public static Boolean isOpen = false;
-    private static final ResourceLocation background = new ResourceLocation(PixelmonInfoPlus.MODID, "textures/gui/ivevgui.png");
+    private static final ResourceLocation background = new ResourceLocation(PixelmonInfoPlus.MODID, "textures/gui/statspanel_background.png");
     public Pokemon pokemon;
 
     public int top = 0;
@@ -250,6 +250,7 @@ public class StatsPanelGuiContainer extends GuiContainer {
             GuiHelper.bindPokemonSprite(this.pokemon, this.mc);
             // 渲染宝可梦像素图标
             GuiHelper.drawImageQuad(offsetX - 2 + 16, offsetY + 18.0D, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
+            GuiHelper.drawImageQuad(offsetX - 2 + 16, offsetY + 18.0D + 22, 68.0D, 68.0F, 0.0D, 0.0D, 1.0D, 1.0D, this.zLevel);
 
             // 启用 OpenGL 色彩混合 & 设置颜色混合模式
             GlStateManager.enableBlend();
@@ -315,16 +316,15 @@ public class StatsPanelGuiContainer extends GuiContainer {
             String pokemonNickname = this.pokemon.getNickname();
 
             if (this.pokemon.isEgg()) {
-                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), offsetX + 47, offsetY + 99, 0xFFFFFF);
-
+                drawCenteredString(this.mc.fontRenderer, Entity1Base.getLocalizedName("Egg"), offsetX + 47, offsetY + 99 + 17, 0xFFFFFF);
             } else {
                 // int offset = pokemon.hasGigantamaxFactor() ? 9 : 0;
                 if (pokemonNickname != null && !pokemonNickname.equals("")) {
                     String ogName = "(" + this.pokemon.getSpecies().getLocalizedName() + ")";
-                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, offsetX + 47, offsetY + 95, 0xFFFFFF);
-                    this.drawCenteredString(this.mc.fontRenderer, ogName, offsetX + 47, offsetY + 104, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, pokemonNickname, offsetX + 47, offsetY + 95 + 17, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, ogName, offsetX + 47, offsetY + 104 + 17, 0xFFFFFF);
                 } else {
-                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), offsetX + 47, offsetY + 99, 0xFFFFFF);
+                    this.drawCenteredString(this.mc.fontRenderer, this.pokemon.getDisplayName(), offsetX + 47, offsetY + 99 + 17, 0xFFFFFF);
                 }
             }
         }
