@@ -4,7 +4,11 @@ package io.github.hhui64.pixelmoninfoplus.pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.client.storage.ClientStorageManager;
 import com.pixelmonmod.pixelmon.client.gui.GuiPixelmonOverlay;
+import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
+import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 
+import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public class PartyApi {
@@ -50,5 +54,38 @@ public class PartyApi {
      */
     public static Pokemon getSelectedPokemon() {
         return ClientStorageManager.party.get(GuiPixelmonOverlay.selectedPixelmon);
+    }
+
+    /**
+     * 获取宝当前宝可梦的 IVStore 实例
+     *
+     * @param pokemonIn 指定的 {@link Pokemon}，如为 null 则自动获取当前队伍中选择的宝可梦
+     * @return {@link IVStore}
+     */
+    public static IVStore getCurrentPokemonIVStore(@Nullable Pokemon pokemonIn) {
+        Pokemon pokemon = pokemonIn != null ? pokemonIn : PartyApi.getSelectedPokemon();
+        if (pokemon != null) {
+            // 获取当前宝可梦自身的本地 IVStore
+            IVStore localIVStore = pokemon.getIVs();
+            // 尝试根据 Pokemon UUID 从缓存处获取 IVStore
+            IVStore remoteIVStore = PartyCache.getPokemonIVStore(pokemon);
+            return Arrays.stream(localIVStore.getArray()).sum() == 0 ? remoteIVStore : localIVStore;
+        }
+        return new IVStore(new int[]{0, 0, 0, 0, 0, 0});
+    }
+
+
+    /**
+     * 获取宝当前宝可梦的 EVStore 实例
+     *
+     * @param pokemonIn 指定的 {@link Pokemon}，如为 null 则自动获取当前队伍中选择的宝可梦
+     * @return {@link EVStore}
+     */
+    public static EVStore getCurrentPokemonEVStore(@Nullable Pokemon pokemonIn) {
+        Pokemon pokemon = pokemonIn != null ? pokemonIn : PartyApi.getSelectedPokemon();
+        if (pokemon != null) {
+            return pokemon.getEVs();
+        }
+        return new EVStore(new int[]{0, 0, 0, 0, 0, 0});
     }
 }

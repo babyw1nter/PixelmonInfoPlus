@@ -172,13 +172,16 @@ public class PartyCache {
      */
     public static void updateCache(boolean forceUpdate) {
         String[] localPartyPokemonsUUID = PartyApi.getTeamStringUUID();
-        List<String> nonExistentPokemonUUID = new ArrayList<>();
 
-        if (forceUpdate) {
-            PixelmonInfoPlusPacketHandler.sendGetIVSMessageRequestToServer(String.join(":", localPartyPokemonsUUID));
-        } else {
+        if (localPartyPokemonsUUID.length == 0) {
+            return;
+        }
+
+        if (!forceUpdate) {
+            List<String> nonExistentPokemonUUID = new ArrayList<>();
+
             for (String uuid : localPartyPokemonsUUID) {
-                if (!PartyCache.pokemonsIVStore.containsKey(uuid)) {
+                if (!PartyCache.hasPokemonIVStore(uuid)) {
                     nonExistentPokemonUUID.add(uuid);
                 }
             }
@@ -186,6 +189,8 @@ public class PartyCache {
             if (nonExistentPokemonUUID.size() > 0) {
                 PixelmonInfoPlusPacketHandler.sendGetIVSMessageRequestToServer(String.join(":", nonExistentPokemonUUID));
             }
+        } else {
+            PixelmonInfoPlusPacketHandler.sendGetIVSMessageRequestToServer(String.join(":", localPartyPokemonsUUID));
         }
     }
 

@@ -140,36 +140,6 @@ public class StatsPanelGuiContainer extends GuiContainer {
     }
 
     /**
-     * 获取宝当前宝可梦的 IVStore 实例
-     * （此方法会在绘制时一直被调用，所以应该不用手动触发更新缓存）
-     *
-     * @return IVStore
-     */
-    public IVStore getCurrentPokemonIVStore() {
-        if (this.pokemon != null) {
-            // 获取当前宝可梦自身的本地 IVStore
-            IVStore localIVStore = this.pokemon.getIVs();
-            // 尝试根据 Pokemon UUID 从缓存处获取 IVStore
-            IVStore remoteIVStore = PartyCache.getPokemonIVStore(this.pokemon);
-            return Arrays.stream(localIVStore.getArray()).sum() == 0 ? remoteIVStore : localIVStore;
-        }
-        return new IVStore(new int[]{0, 0, 0, 0, 0, 0});
-    }
-
-
-    /**
-     * 获取宝当前宝可梦的 EVStore 实例
-     *
-     * @return EVStore
-     */
-    public EVStore getCurrentPokemonEVStore() {
-        if (this.pokemon != null) {
-            return this.pokemon.getEVs();
-        }
-        return new EVStore(new int[]{0, 0, 0, 0, 0, 0});
-    }
-
-    /**
      * 绘制背景层
      * <p>
      * Draws the background layer of this container (behind the items).
@@ -210,8 +180,8 @@ public class StatsPanelGuiContainer extends GuiContainer {
     public void drawProgress() {
         int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
 
-        IVStore ivs = this.getCurrentPokemonIVStore();
-        EVStore evs = this.getCurrentPokemonEVStore();
+        IVStore ivs = PartyApi.getCurrentPokemonIVStore(this.pokemon);
+        EVStore evs = PartyApi.getCurrentPokemonEVStore(this.pokemon);
 
         int ivsProgressWidth = Math.toIntExact(Math.round(115 * ivs.getPercentage(0) / 100));
         double evsPercentage = Arrays.stream(evs.getArray()).sum() / 510.0 * 100.0;
@@ -228,8 +198,8 @@ public class StatsPanelGuiContainer extends GuiContainer {
         int offsetX = this.getOffsetXY()[0], offsetY = this.getOffsetXY()[1];
 
         if (this.pokemon != null) {
-            IVStore ivs = this.getCurrentPokemonIVStore();
-            EVStore evs = this.getCurrentPokemonEVStore();
+            IVStore ivs = PartyApi.getCurrentPokemonIVStore(this.pokemon);
+            EVStore evs = PartyApi.getCurrentPokemonEVStore(this.pokemon);
             double evsPercentage = Arrays.stream(evs.getArray()).sum() / 510.0 * 100.0;
 
             String strIVs = this.pokemon.isEgg() ? "???/??? (???%)" : Arrays.stream(ivs.getArray()).sum() + "/186 (" + Math.round(ivs.getPercentage(0)) + "%)";
@@ -339,8 +309,8 @@ public class StatsPanelGuiContainer extends GuiContainer {
         int x = offsetX + 104;
 
         if (this.pokemon != null) {
-            IVStore ivs = this.getCurrentPokemonIVStore();
-            EVStore evs = this.getCurrentPokemonEVStore();
+            IVStore ivs = PartyApi.getCurrentPokemonIVStore(this.pokemon);
+            EVStore evs = PartyApi.getCurrentPokemonEVStore(this.pokemon);
 
             String IVsHp = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.HP) ? "31(" + ivs.getStat(StatsType.HP) + ")" : String.valueOf(ivs.getStat(StatsType.HP));
             String IVsAtk = this.pokemon.isEgg() ? "???" : ivs.isHyperTrained(StatsType.Attack) ? "31(" + ivs.getStat(StatsType.Attack) + ")" : String.valueOf(ivs.getStat(StatsType.Attack));
