@@ -2,7 +2,7 @@
 
 Show more info about Pixelmon.
 
-![screenshot](https://raw.githubusercontent.com/hhui64/imagebed/main/2021-07-18_02.40.32.png)
+![screenshot](https://raw.githubusercontent.com/hhui64/imagebed/main/2021-07-18_17.18.07.png)
 
 ## Introduction
 
