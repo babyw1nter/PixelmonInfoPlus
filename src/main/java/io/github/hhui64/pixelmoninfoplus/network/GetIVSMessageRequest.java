@@ -69,7 +69,7 @@ public class GetIVSMessageRequest extends IMessageBase {
                                         }
                                 );
                             } else {
-                                getIvsMessageResponse.compound.setIntArray(String.valueOf(pokemonUUID), new IVStore(new int[]{0, 0, 0, 0, 0, 0}).getArray());
+                                getIvsMessageResponse.compound.setIntArray(pokemonUUID.toString(), new int[]{0, 0, 0, 0, 0, 0});
                                 getIvsMessageResponse.compound.setIntArray(pokemonUUID + ":ht", new int[]{0, 0, 0, 0, 0, 0});
                             }
                         }
