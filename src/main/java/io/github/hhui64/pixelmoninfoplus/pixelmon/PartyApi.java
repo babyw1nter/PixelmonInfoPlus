@@ -67,7 +67,7 @@ public class PartyApi {
         if (pokemon != null) {
             // 获取当前宝可梦自身的本地 IVStore
             IVStore localIVStore = pokemon.getIVs();
-            // 尝试根据 Pokemon UUID 从缓存处获取 IVStore
+            // 尝试从缓存处获取当前宝可梦自身的 IVStore
             IVStore remoteIVStore = PartyCache.getPokemonIVStore(pokemon);
             return Arrays.stream(localIVStore.getArray()).sum() == 0 ? remoteIVStore : localIVStore;
         }
