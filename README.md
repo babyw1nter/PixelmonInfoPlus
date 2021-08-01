@@ -4,6 +4,8 @@ Show more info about Pixelmon.
 
 ![screenshot](https://raw.githubusercontent.com/hhui64/imagebed/main/2021-07-18_19.15.31.png)
 
+English | [简体中文](./README-zh_CN.md)
+
 ## Introduction
 
 Pixelmon Info Plus is a simple Minecraft Mod to show more info about Pixelmon. It can show Pokémon IV's and EV's on the GUI. Singleplayer and multiplayer(If this mod is installed
