@@ -79,7 +79,7 @@ public class PartyCache {
      */
     public static IVStore getPokemonIVStore(String uuid, boolean shouldUpdate) {
         if (shouldUpdate && !pokemonsIVStore.containsKey(uuid)) {
-            PartyCache.updateCache(true);
+            PartyCache.updateCache(false);
         }
         return PartyCache.getPokemonIVStore(uuid);
     }
