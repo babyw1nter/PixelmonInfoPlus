@@ -8,7 +8,7 @@
 
 ## 介绍
 
-Pixelmon Info Plus 是一个用于显示更多关于 Pixelmon 的信息的 Minecraft Mod，它以 GUI 形式展示宝可梦的个体值和努力值，支持单人游戏和多人游戏。
+Pixelmon Info Plus 是一个用于显示更多关于 Pixelmon 的信息的 Minecraft Mod，它以 GUI 形式展示宝可梦的个体值和努力值，支持单人游戏和多人游戏（前提是服务器也安装了此 Mod）。
 
 ## 功能
 
